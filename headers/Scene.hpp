@@ -5,19 +5,17 @@
 class Scene
 {
 public:
-  enum class Type { menu, pause, game };
+  enum class Type { menu, pause, gameplay, end };
 
   Scene(Window &, Type);
-  ~Scene();
+  virtual ~Scene();
 
   const Type & getType() const;
 
-  /*virtual void handleEvents() = 0;
-  virtual void update() = 0;
-  virtual void render() = 0;*/
-
   const sf::Time & getElapsed() const;
   void restartClock();
+
+  virtual Type run() = 0;
 
 protected:
   Window & m_window;
