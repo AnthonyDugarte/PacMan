@@ -6,8 +6,7 @@
 class Window : public sf::RenderWindow
 {
 public:
-  Window();
-  Window(const std::string & l_title, const sf::Vector2u & l_size);
+  Window(const std::string & l_title = "Pacman", const sf::Vector2u & l_size = sf::Vector2u(640, 480));
 
   ~Window();
 
@@ -24,11 +23,10 @@ public:
   sf::Vector2u 	getSize () const override;
 
 private:
-  void __setup(const std::string & l_title, const sf::Vector2u & l_size);
   void __create();
 
   sf::Vector2u m_windowSize;
   std::string m_windowTitle;
-  bool m_isDone;
-  bool m_isFullScreen;
+  bool m_isFullScreen = false;
+  bool m_isDone = false;
 };

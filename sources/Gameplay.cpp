@@ -26,16 +26,16 @@ Scene::Type Gameplay::run()
         switch (event.key.code)
         {
           case sf::Keyboard::W:
-          rec.move(0, -10);
+          rec.move(0, -.2f * getElapsed().asMilliseconds());
           break;
           case sf::Keyboard::S:
-          rec.move(0, 10);
+          rec.move(0, .2f * getElapsed().asMilliseconds());
           break;
           case sf::Keyboard::A:
-          rec.move(-10, 0);
+          rec.move(-.2f * getElapsed().asMilliseconds(), 0);
           break;
           case sf::Keyboard::D:
-          rec.move(10, 0);
+          rec.move(.2f * getElapsed().asMilliseconds(), 0);
           break;
 
           default: break;

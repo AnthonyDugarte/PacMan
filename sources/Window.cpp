@@ -1,13 +1,10 @@
 # include <Window.hpp>
 
-Window::Window()
-{
-  __setup("window", sf::Vector2u(640, 480));
-}
-
 Window::Window(const std::string & l_title, const sf::Vector2u & l_size)
+  : m_windowTitle(l_title),
+    m_windowSize(l_size)
 {
-  __setup(l_title, l_size);
+  __create();
 }
 
 Window::~Window()
@@ -54,15 +51,6 @@ void Window::toggleFullScreen()
 sf::Vector2u Window::getSize () const
 {
   return m_windowSize;
-}
-
-void Window::__setup(const std::string & l_title, const sf::Vector2u & l_size)
-{
-  m_windowTitle = l_title;
-  m_windowSize = l_size;
-  m_isFullScreen = m_isDone = false;
-
-  __create();
 }
 
 void Window::__create()
