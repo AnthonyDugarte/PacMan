@@ -3,7 +3,7 @@
 # include <string>
 # include <SFML/Graphics.hpp>
 
-class Window
+class Window : public sf::RenderWindow
 {
 public:
   Window();
@@ -11,25 +11,22 @@ public:
 
   ~Window();
 
-  void beginRender(); // clear window
-  void draw(sf::Drawable & l_drawable);
+  void beginRender(const sf::Color & BGcolor = sf::Color::Black);
   void endRender(); // display changes
 
-  void handleEvents();
+  void handleEvent(const sf::Event &);
 
   const bool & isDone() const;
 
   bool isFullScreen() const;
   void toggleFullScreen();
 
-  const sf::Vector2u & getWindowSize() const;
+  sf::Vector2u 	getSize () const override;
 
 private:
-  void setup(const std::string & l_title, const sf::Vector2u & l_size);
-  void destroy();
-  void create();
+  void __setup(const std::string & l_title, const sf::Vector2u & l_size);
+  void __create();
 
-  sf::RenderWindow m_window;
   sf::Vector2u m_windowSize;
   std::string m_windowTitle;
   bool m_isDone;

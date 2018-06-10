@@ -2,46 +2,36 @@
 
 Window::Window()
 {
-  setup("window", sf::Vector2u(640, 480));
+  __setup("window", sf::Vector2u(640, 480));
 }
 
 Window::Window(const std::string & l_title, const sf::Vector2u & l_size)
 {
-  setup(l_title, l_size);
+  __setup(l_title, l_size);
 }
 
 Window::~Window()
 {
-  destroy();
+  close();
 }
 
-void Window::Window::beginRender()
+void Window::Window::beginRender(const sf::Color & BGcolor)
 {
-  m_window.clear(sf::Color::Black);
-}
-
-void Window::draw(sf::Drawable & l_drawable)
-{
-  m_window.draw(l_drawable);
+  clear(BGcolor);
 }
 
 void Window::endRender()
 {
-  m_window.display();
+  display();
 }
 
-void Window::handleEvents()
+void Window::handleEvent(const sf::Event & event)
 {
-  sf::Event event;
+  if (event.type == sf::Event::Closed)
+    m_isDone = true;
 
-  while (m_window.pollEvent(event))
-  {
-    if (event.type == sf::Event::Closed)
-      m_isDone = true;
-
-    else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::F5)
-      toggleFullScreen();
-  }
+  else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::F5)
+    toggleFullScreen();
 }
 
 const bool & Window::isDone() const
@@ -54,39 +44,34 @@ bool Window::isFullScreen() const
   return m_isFullScreen;
 }
 
-const sf::Vector2u & Window::getWindowSize() const
+void Window::toggleFullScreen()
+{
+  m_isFullScreen = not m_isFullScreen;
+  close();
+  __create();
+}
+
+sf::Vector2u Window::getSize () const
 {
   return m_windowSize;
 }
 
-void Window::toggleFullScreen()
-{
-  m_isFullScreen = not m_isFullScreen;
-  destroy();
-  create();
-}
-
-void Window::setup(const std::string & l_title, const sf::Vector2u & l_size)
+void Window::__setup(const std::string & l_title, const sf::Vector2u & l_size)
 {
   m_windowTitle = l_title;
   m_windowSize = l_size;
   m_isFullScreen = m_isDone = false;
 
-  create();
+  __create();
 }
 
-void Window::destroy()
-{
-  m_window.close();
-}
-
-void Window::create()
+void Window::__create()
 {
   auto style { m_isFullScreen ?
       sf::Style::Fullscreen : sf::Style::Default };
 
-  m_window.create( { m_windowSize.x, m_windowSize.y, 32 },
+  create( { m_windowSize.x, m_windowSize.y, 32 },
       m_windowTitle, style);
 
-  m_window.setFramerateLimit(30);
+  setFramerateLimit(30);
 }
