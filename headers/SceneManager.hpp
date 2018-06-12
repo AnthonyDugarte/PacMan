@@ -7,9 +7,9 @@
 class SceneManager
 {
 public:
-  SceneManager();
+  SceneManager ();
 
-  void startGame();
+  void startGame ();
 
 private:
   Window m_window;
