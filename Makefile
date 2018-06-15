@@ -1,4 +1,4 @@
-CXX = clang++ -g -std=c++14
+CXX = clang++ -std=c++14
 
 GAME = pacman.out
 
@@ -13,7 +13,7 @@ OBJS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 all: $(GAME)
 
 $(GAME): $(OBJS)
-	$(CXX) $^ -o $@ -lsfml-window -lsfml-system -lsfml-graphics -lsfml-audio
+	$(CXX) $^ -o $@ -lsfml-window -lsfml-system -lsfml-graphics -lsfml-audio -pthread
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) -c $< -I$(INCLUDEDIR) -o $@

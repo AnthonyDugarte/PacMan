@@ -17,16 +17,20 @@ public:
   const bool & isDone () const;
 
   bool isFullScreen () const;
-  void toggleFullScreen ();
-  void screenShot () const;
 
   sf::Vector2u 	getSize  () const override;
 
 private:
   void __create ();
 
+  void toggleFullScreen ();
+  void screenShot ();
+
   sf::Vector2u m_windowSize;
   std::string m_windowTitle;
   bool m_isFullScreen = false;
   bool m_isDone = false;
+
+  size_t m_capsN = 0;
+  bool screenShootTaken = false;
 };

@@ -4,11 +4,27 @@ Window::Window (const std::string & l_title, const sf::Vector2u & l_size)
   : m_windowTitle(l_title),
     m_windowSize(l_size)
 {
+  std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
+
+  std::string str;
+  std::getline(ctrol, str , '\n');
+
+  m_capsN = std::stoi(str);
+
   __create();
 }
 
 Window::~Window ()
 {
+  if(screenShootTaken)
+  {
+    std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
+    ctrol.seekg(0);
+    ctrol << m_capsN;
+
+    ctrol.close();
+  }
+
   close();
 }
 
@@ -51,28 +67,16 @@ void Window::handleEvent (const sf::Event & event)
   }
 }
 
-void Window::screenShot() const
+void Window::screenShot()
 {
-  std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
-
-  std::string str;
-  std::getline(ctrol, str , '\n');
-
-  int number { std::stoi(str) };
-
+  screenShootTaken = true;
   sf::Vector2u windowSize { getSize() };
 
   sf::Texture texture;
   texture.create(windowSize.x, windowSize.y);
   texture.update(*this);
 
-  sf::Image screenshot { texture.copyToImage() };
-  screenshot.saveToFile("assets/Captures/capture" + std::to_string(number++) + ".png");
-
-  ctrol.seekg(0);
-  ctrol << number;
-  
-  ctrol.close();
+  AssetManager::saveScreenShot(std::move(texture), m_capsN++);
 }
 
 const bool & Window::isDone () const

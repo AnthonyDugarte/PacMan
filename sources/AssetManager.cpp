@@ -44,3 +44,24 @@ std::fstream AssetManager::getFile(const std::string & filename)
 
   return std::move(file);
 }
+
+
+namespace Helpers
+{
+  void __saveScreenShot (sf::Texture && texture, size_t capsN)
+  {
+    std::string prefix{ "assets/Captures/capture" }, sufix{ ".png" };
+
+    sf::Image screenshot { texture.copyToImage() };
+    screenshot.saveToFile(prefix + std::to_string(capsN) + sufix);
+  }
+}
+
+void AssetManager::saveScreenShot (sf::Texture && texture, size_t capsN)
+{
+  auto && instance { get_instance() };
+
+  // set it as a std::asyc  so the copy to image from a texture process don't slow down main loop updates
+  // it could have optimizations and better implementation.
+  instance.voidFutures.emplace_back(std::async(std::launch::async, Helpers::__saveScreenShot, texture, capsN));
+}
