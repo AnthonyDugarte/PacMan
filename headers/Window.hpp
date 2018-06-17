@@ -5,20 +5,20 @@
 class Window : public sf::RenderWindow
 {
 public:
-  Window (const std::string & l_title = "Pacman", const sf::Vector2u & l_size = sf::Vector2u(640, 480));
-
+  // "pacmon for possible default construction forgotten"
+  Window (const std::string & l_title = "Pacmom", const sf::Vector2u & l_size = sf::Vector2u(640, 480));
   ~Window ();
-
-  void beginRender (const sf::Color & BGcolor = sf::Color::Black);
-  void endRender (); // display changes
 
   void handleEvent (const sf::Event &);
 
+  //  this is a wrapper for clear() fuction
+  void beginRender (const sf::Color & BGcolor = sf::Color::Black);
+  // display() fuction wrapper
+  void endRender ();
+
   const bool & isDone () const;
-
   bool isFullScreen () const;
-
-  sf::Vector2u 	getSize  () const override;
+  sf::Vector2u 	getSize () const override;
 
 private:
   void __create ();
@@ -31,6 +31,6 @@ private:
   bool m_isFullScreen = false;
   bool m_isDone = false;
 
-  size_t m_capsN = 0;
-  bool screenShootTaken = false;
+  size_t m_capsN = 0; // number of captures
+  bool screenShootTaken = false; // to know if we need to updated assets/Captures/ctrol.file
 };

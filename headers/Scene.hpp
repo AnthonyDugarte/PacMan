@@ -5,7 +5,7 @@
 class Scene
 {
 public:
-  enum class Type { menu, pause, gameplay, end };
+  enum class Type { gameplay, end };
 
   Scene (Window &, Type);
   virtual ~Scene ();

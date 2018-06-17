@@ -16,7 +16,7 @@ Window::Window (const std::string & l_title, const sf::Vector2u & l_size)
 
 Window::~Window ()
 {
-  if(screenShootTaken)
+  if(screenShootTaken) // see? xD
   {
     std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
     ctrol.seekg(0);
@@ -47,7 +47,6 @@ void Window::handleEvent (const sf::Event & event)
     break;
 
     case sf::Event::KeyPressed:
-
     switch (event.key.code)
     {
       case sf::Keyboard::F5:
@@ -60,7 +59,6 @@ void Window::handleEvent (const sf::Event & event)
 
       default: break;
     }
-
     break;
 
     default: break;
