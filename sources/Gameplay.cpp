@@ -1,61 +1,39 @@
 # include <Gameplay.hpp>
 
-Gameplay::Gameplay(Window & window)
-  : Scene(window, Scene::Type::gameplay)
+Gameplay::Gameplay (Window & window)
+  : Scene(window, Scene::Type::gameplay),
+    m_map("16x16"),
+    m_food(m_map)
 {
   // empty
 }
 
-Scene::Type Gameplay::run()
+Scene::Type Gameplay::run ()
 {
-  sf::RectangleShape rec(sf::Vector2f(10, 10));
-  rec.setFillColor(sf::Color::Blue);
-
+  m_pacman.setTexture(AssetManager::getTexture("Pacman/walk0.png"), true);
+  float scale = 14.f / 65.f;
+  m_pacman.setScale(scale, scale);
+  m_pacman.setOrigin(Helpers::getSpriteLocalCenter(m_pacman));
+  m_pacman.setPosition(222,376);
 
   restartClock();
   while(not m_window.isDone())
   {
     sf::Event event;
     while(m_window.pollEvent(event))
-    {
       m_window.handleEvent(event);
 
-      switch(event.type)
-      {
-        case sf::Event::KeyPressed:
-        switch (event.key.code)
-        {
-          case sf::Keyboard::W:
-          rec.move(0, -.2f * getElapsed().asMilliseconds());
-          break;
-          case sf::Keyboard::S:
-          rec.move(0, .2f * getElapsed().asMilliseconds());
-          break;
-          case sf::Keyboard::A:
-          rec.move(-.2f * getElapsed().asMilliseconds(), 0);
-          break;
-          case sf::Keyboard::D:
-          rec.move(.2f * getElapsed().asMilliseconds(), 0);
-          break;
+    m_pacman.update(getElapsed(), &m_map);
+    m_food.eatFood(m_pacman.getPosition());
 
-          default: break;
-        }
-        break;
-
-        default:
-        break;
-      }
-    }
-
-    m_window.beginRender();
-    m_window.draw(rec);
+    m_window.beginRender(sf::Color::Black);
+    m_window.draw(m_map);
+    m_window.draw(m_food);
+    m_window.draw(m_pacman);
     m_window.endRender();
 
     restartClock();
   }
 
-  /*virtual void handleEvents() = 0;
-  virtual void update() = 0;
-  virtual void render() = 0;*/
   return Scene::Type::end;
 }
