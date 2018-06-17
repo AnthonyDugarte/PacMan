@@ -1,6 +1,6 @@
 # include <SceneManager.hpp>
 
-int main()
+int main ()
 {
   SceneManager().startGame();
 
