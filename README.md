@@ -18,12 +18,14 @@
 
 ## Download and play
 * This game was made with [SFML library](https://www.sfml-dev.org/), in order to play it, install this library
-      sudo apt-get install libsfml-dev
+```
+sudo apt-get install libsfml-dev
+```
 
 * Game:
-~~~
+```
 git clone https://github.com/prfcto2/PacMan.git
 cd PacMan
 make
 ./pacman.out
-~~~
+```
