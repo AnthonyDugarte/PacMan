@@ -1,12 +1,12 @@
 # include <AssetManager.hpp>
 
-AssetManager::AssetManager()
-  : m_textures()
+AssetManager::AssetManager ()
+: m_textures()
 {
   // empty
 }
 
-AssetManager::~AssetManager()
+AssetManager::~AssetManager ()
 {
   while(not m_bitmasks.empty())
   {
@@ -15,7 +15,7 @@ AssetManager::~AssetManager()
   }
 }
 
-sf::Texture & AssetManager::getTexture(const std::string & name)
+sf::Texture & AssetManager::getTexture (const std::string & name)
 {
   //Manager instance
   auto && instance { get_instance() };
@@ -38,10 +38,10 @@ sf::Texture & AssetManager::getTexture(const std::string & name)
 
 namespace Helpers
 {
-  const std::pair<const sf::Texture *, sf::Uint8 *> getMask(const sf::Texture *);
+  const std::pair<const sf::Texture *, sf::Uint8 *> getMask (const sf::Texture *);
 }
 
-sf::Uint8 * AssetManager::getBitMask(const std::string & name)
+sf::Uint8 * AssetManager::getBitMask (const std::string & name)
 {
   //Manager instance
   auto && instance { get_instance() };
@@ -68,7 +68,7 @@ sf::Uint8 * AssetManager::getBitMask(const std::string & name)
   return *&new_mask.second;
 }
 
-sf::Uint8 * AssetManager::getBitMask(const sf::Texture * bitMaskTexture)
+sf::Uint8 * AssetManager::getBitMask (const sf::Texture * bitMaskTexture)
 {
   //Manager instance
   auto && instance { get_instance() };
@@ -85,7 +85,7 @@ sf::Uint8 * AssetManager::getBitMask(const sf::Texture * bitMaskTexture)
 
 namespace Helpers
 {
-  const std::pair<const sf::Texture *, sf::Uint8 *> getMask(const sf::Texture * texture)
+  const std::pair<const sf::Texture *, sf::Uint8 *> getMask (const sf::Texture * texture)
   {
     sf::Image img{ texture->copyToImage() };
     sf::Uint8 * new_mask{ new sf::Uint8[texture->getSize().y * texture->getSize().x] };
@@ -98,7 +98,7 @@ namespace Helpers
   }
 }
 
-std::fstream AssetManager::getFile(const std::string & filename)
+std::fstream AssetManager::getFile (const std::string & filename)
 {
   std::string prefix{ "assets/" };
   std::fstream file(prefix + filename);

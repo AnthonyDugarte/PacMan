@@ -18,9 +18,9 @@ public:
   bool eatFood (const sf::Vector2f & position);
 
 private:
-  void updateTexture();
+  void updateTexture ();
 
-  bool _eat(const sf::Vector2i &);
+  bool _eat (const sf::Vector2i &);
 
   // here we have our status
   std::vector<std::vector<bool>> foodStatus;

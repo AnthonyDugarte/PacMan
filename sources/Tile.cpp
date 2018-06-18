@@ -17,7 +17,7 @@ bool Tile::isPath () const
   return m_type == Type::path ? true : false;
 }
 
-TilesInfo Tile::getTilesInfo(const std::string & fileName)
+TilesInfo Tile::getTilesInfo (const std::string & fileName)
 {
   std::fstream source { AssetManager::getFile("map/" + fileName + "/tiles.info") };
   std::string str;

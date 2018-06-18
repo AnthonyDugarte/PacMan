@@ -1,8 +1,8 @@
 # include <Window.hpp>
 
 Window::Window (const std::string & l_title, const sf::Vector2u & l_size)
-  : m_windowTitle(l_title),
-    m_windowSize(l_size)
+: m_windowTitle(l_title),
+  m_windowSize(l_size)
 {
   std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
 
@@ -65,7 +65,7 @@ void Window::handleEvent (const sf::Event & event)
   }
 }
 
-void Window::screenShot()
+void Window::screenShot ()
 {
   screenShootTaken = true;
   sf::Vector2u windowSize { getSize() };

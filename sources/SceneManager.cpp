@@ -1,8 +1,8 @@
 # include <SceneManager.hpp>
 
 SceneManager::SceneManager ()
-  : m_window("Pacman", sf::Vector2u(28 * 16, 31 * 16)),
-    type(Scene::Type::gameplay)
+: m_window("Pacman", sf::Vector2u(28 * 16, 31 * 16)),
+  type(Scene::Type::gameplay)
 {
   // empty
 }

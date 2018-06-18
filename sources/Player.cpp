@@ -1,69 +1,88 @@
 # include <Player.hpp>
 
-Player::Player ()
+Player::Player (const std::string & animPack, sf::Vector2f initPos)
+: walking(sf::seconds(3.f / 16), true), // it'll be looping
+  dying(sf::seconds(1.5f), false),
+  m_initPos(initPos)
 {
-  // empty
+  walking.addFrames(animPack + "/walking");
+  dying.addFrames(animPack + "/dying");
+
+  setTexture(walking.getFrame(0), true);
+
+  float scale = 14.f / 65.f;
+  setScale(scale, scale);
+  setOrigin(Helpers::getSpriteLocalCenter(*this));
+  setRotation(-90);
+  setPosition(m_initPos);
 }
-Player::Player (const sf::Texture & texture, const sf::IntRect & rectangle)
-  : sf::Sprite(texture, rectangle)
+
+void Player::update (const sf::Time & dt, TileMap * map)
 {
-  // empty
+  if(recentlyAttacked())
+  {
+    pad.resetAx(); // not moving
+    setRotation(getRotation() + 90); // dying animation is rotated
+  }
+
+  if(not attackable() and dying.getElapsed() - sf::seconds(1) > dying.getDuration())
+  {
+    restoreAttackable();
+    setRotation(-90); // restore dying rotation
+    setPosition(m_initPos);
+
+    dying.reset();
+  }
+
+  if(attackable() and dead())
+    return;
+    // for(size_t i { 4 }; --i; healted()); // restore lifes
+
+  if(attackable())
+    Entity::update(dt, &*map);
+
+  updateAnimation(dt);
 }
 
-void Player::update (const sf::Time & dt, TileMap * map_)
+void Player::updateAnimation (const sf::Time & dt)
 {
-  pad.update();
-
-  if(map_)
-    map_->updateWSAD(pad, getPosition());
-
-  if(pad.W)
+  if(moving())
   {
-    moveUp(dt);
-
-    if(map_ and Helpers::hasCollision(*this, *map_))
-      moveUp(-dt);
+    walking.update(dt);
+    setTexture(walking.getFrame(), true);
   }
-  else if(pad.S)
+  else if(not attackable())
   {
-    moveDown(dt);
-
-    if(map_ and Helpers::hasCollision(*this, *map_))
-      moveDown(-dt);
+    setTexture(dying.getFrame(), true);
+    dying.update(dt);
   }
-
-  if(pad.A)
-  {
-    moveLeft(dt);
-
-    if(map_ and Helpers::hasCollision(*this, *map_))
-      moveLeft(-dt);
-  }
-  else if(pad.D)
-  {
-    moveRight(dt);
-
-    if(map_ and Helpers::hasCollision(*this, *map_))
-      moveRight(-dt);
-  }
+  else setTexture(walking.getFrame(0), true); // not moving
 }
 
 void Player::moveUp (const sf::Time & dt)
 {
-  move(0, -m_velocity * dt.asSeconds());
+  Entity::moveUp(dt);
+  if(pad.W)
+    setRotation(-90.f);
 }
 
 void Player::moveDown (const sf::Time & dt)
 {
-  move(0, m_velocity * dt.asSeconds());
+  Entity::moveDown(dt);
+  if(pad.S)
+    setRotation(90.f);
 }
 
 void Player::moveLeft (const sf::Time & dt)
 {
-  move(-m_velocity * dt.asSeconds(), 0);
+  Entity::moveLeft(dt);
+  if(pad.A)
+    setRotation(180.f);
 }
 
 void Player::moveRight (const sf::Time & dt)
 {
-  move(m_velocity * dt.asSeconds(), 0);
+  Entity::moveRight(dt);
+  if(pad.D)
+    setRotation(0.f);
 }

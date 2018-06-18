@@ -2,14 +2,14 @@
 
 namespace Helpers
 {
-  sf::Vector2f GetSpriteCenter(const sf::Sprite & sprite)
+  sf::Vector2f GetSpriteCenter (const sf::Sprite & sprite)
   {
     sf::FloatRect bounds = sprite.getGlobalBounds();
 
     return sf::Vector2f (bounds.left+bounds.width * .5f, bounds.top + bounds.height * .5f);
   }
 
-  sf::Vector2f getSpriteLocalCenter(const sf::Sprite & sprite)
+  sf::Vector2f getSpriteLocalCenter (const sf::Sprite & sprite)
   {
     return sf::Vector2f(static_cast<sf::Vector2f>(sprite.getTexture()->getSize()) * .5f);
   }
@@ -22,7 +22,7 @@ namespace Helpers
     return mask[x + y * texture->getSize().x];
   }
 
-  bool hasCollision(const sf::Sprite & Ob1, const sf::Sprite & Ob2, sf::Uint8 alphaLimit)
+  bool hasCollision (const sf::Sprite & Ob1, const sf::Sprite & Ob2, sf::Uint8 alphaLimit)
   {
     sf::FloatRect IntersectionRect;
 
@@ -58,7 +58,7 @@ namespace Helpers
   std::random_device seed_device;
   std::default_random_engine engine(seed_device());
 
-  int random(int l, int r)
+  int random (int l, int r)
   {
     assert(l < r);
     std::uniform_int_distribution<uint> distribution(l, r);
@@ -66,7 +66,7 @@ namespace Helpers
     return distribution(engine);
   }
 
-  float random(float l, float r)
+  float random (float l, float r)
   {
     assert(l < r);
     std::uniform_real_distribution<float> distribution(l, r);

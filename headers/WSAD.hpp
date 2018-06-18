@@ -14,8 +14,8 @@ public:
   void update ();
 
   void resetAx (Axis = Axis::xy);
-  int rPressed () const; // are pressed?
-  
+  int rPressed () const; // are pressed? or should I say, rMoving?
+
 private:
   void getInput ();
   void handleInput ();

@@ -1,15 +1,16 @@
 # include <WSAD.hpp>
 
-WSAD::WSAD()
+WSAD::WSAD ()
 {
   // empty
 }
 
-void WSAD::update()
+void WSAD::update ()
 {
   getInput();
   handleInput();
 }
+
 void WSAD::resetAx (Axis axis)
 {
   switch (axis)

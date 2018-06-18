@@ -6,14 +6,17 @@ TileMap::TileMap (const std::string & mapName, bool showPath)
 {
   if(not Helpers::isMapAvailable(*this))
     Helpers::generateMap(*this, Tile::getTilesInfo(mapName));
+
+  m_texture.display();
+  setTexture(m_texture.getTexture(), true);
 }
 
-const std::string & TileMap::name() const
+const std::string & TileMap::name () const
 {
   return m_name;
 }
 
-void TileMap::updateWSAD(WSAD & pad, const sf::Vector2f & floatPos)
+void TileMap::updateWSAD (WSAD & pad, const sf::Vector2f & floatPos)
 {
   sf::Vector2i position(floatPos.x / tileSize.x, floatPos.y / tileSize.y);
   sf::Vector2i tilePosition;
@@ -43,22 +46,22 @@ void TileMap::updateWSAD(WSAD & pad, const sf::Vector2f & floatPos)
     pad.D = false;
 }
 
-sf::Vector2i TileMap::getTileSize() const
+sf::Vector2i TileMap::getTileSize () const
 {
   return tileSize;
 }
 
-sf::Vector2i TileMap::getTileCount() const
+sf::Vector2i TileMap::getTileCount () const
 {
   return { tiles.size() > 0 ? static_cast<int>(tiles[0].size()) : 0, static_cast<int>(tiles.size()) };
 }
 
-bool TileMap::isWalkable(float x, float y) const
+bool TileMap::isWalkable (float x, float y) const
 {
   return _walkable(y / tileSize.y, x / tileSize.x);
 }
 
-bool TileMap::_walkable(float x, float y) const
+bool TileMap::_walkable (float x, float y) const
 {
   if(y >= tiles.size() or tiles.size() == 0)
     return false;
@@ -72,9 +75,9 @@ bool TileMap::_walkable(float x, float y) const
 
 namespace Helpers
 {
-  bool isMapAvailable(TileMap & tile_map)
+  bool isMapAvailable (TileMap & tile_map)
   {
-    try // to see if ma.info is build
+    try // to see if map.info is build
     {
       auto && mapPath { AssetManager::getFile("map/" + tile_map.name() + "/map.info") };
       std::string str;
@@ -117,7 +120,15 @@ namespace Helpers
     try // now to take the texture
     {
       auto && mapTexture { AssetManager::getTexture("map/" + tile_map.name() + "/map.png") };
-      tile_map.setTexture(mapTexture, true);
+
+      sf::Vector2i size(tile_map.getTileCount().x * tile_map.getTileSize().x,
+                                  tile_map.getTileCount().y * tile_map.getTileSize().y);
+
+      tile_map.m_texture.create(size.x, size.y);
+      tile_map.m_texture.setSmooth(true);
+
+      sf::Sprite aux(mapTexture);
+      tile_map.m_texture.draw(aux);
     }
     catch(...) // if wasn't taken, then it is not available... true logic
     {
@@ -129,10 +140,8 @@ namespace Helpers
     return true; // it's available aksjdkasjdkas
   }
 
-  void generateMap(TileMap & tile_map, const TilesInfo & inf)
+  void generateMap (TileMap & tile_map, const TilesInfo & inf)
   {
-    // we secure our map is as clean as a whistle
-    tile_map.tiles.clear();
     {
       // we are creating our (x, y) vector accordint to the map size (tileNumber SFML's confussing pair name)
 
@@ -144,12 +153,11 @@ namespace Helpers
     }
 
     // where we hare going to draw the map, for the sake of clarity
-    sf::RenderTexture mapDraw;
 
     // defining the size of the map according to number of tiles and their size
-    mapDraw.create(inf.tileNumber.x * inf.tileSize.x, inf.tileNumber.y * inf.tileSize.y);
+    tile_map.m_texture.create(inf.tileNumber.x * inf.tileSize.x, inf.tileNumber.y * inf.tileSize.y);
     // cute and smoothy picture.
-    mapDraw.setSmooth(true);
+    tile_map.m_texture.setSmooth(true);
 
     /* number of capes the world is going to have, what I say is: number of different
      * textures to render, their priotity goes from low->hight.
@@ -214,7 +222,7 @@ namespace Helpers
 
               // uhmm variable names should be reworked
               tileSprite.setPosition(currPos.x * inf.tileSize.x, currPos.y * inf.tileSize.y);
-              mapDraw.draw(tileSprite);
+              tile_map.m_texture.draw(tileSprite);
             }
           }
 
@@ -231,16 +239,14 @@ namespace Helpers
       tileFile.close();
     } // end of tiles. We now shall draw our map and set it uuwwu
 
-    mapDraw.display(); // sounds tricky, isn't it? Just check sf::RenderTexture documentation (I haven't, not completly of course, gosh)
+    tile_map.m_texture.display(); // sounds tricky, isn't it? Just check sf::RenderTexture documentation (I haven't, not completly of course, gosh)
 
     /* TODO: this last part should be reworked. Why are we saving our texture and then
      * we are uploading it again, little magic to be done on AssetManager
      */
-    sf::Image img { mapDraw.getTexture().copyToImage() };
+    sf::Image img { tile_map.m_texture.getTexture().copyToImage() };
     // img.createMaskFromColor(sf::Color::Black);
     img.saveToFile("assets/map/" + tile_map.name() + "/map.png"); // we save it as map because what the hell
-
-    tile_map.setTexture(AssetManager::getTexture("map/" + tile_map.name() + "/map.png")); // we then set it
 
     /* saving the map.info (tile division, this is going to be use for walking uwwu, we are gonna save the size of the map so we can
      *  reload our vector with the isMapAvailable function.
@@ -259,6 +265,8 @@ namespace Helpers
       mapInfo.seekp(static_cast<int>(mapInfo.tellp()) - 1);
       mapInfo << "\n";
     }
+
+    tile_map.tileSize = inf.tileSize;
 
     std::clog << "successful map Creation\n"; // cute log report of success
   }

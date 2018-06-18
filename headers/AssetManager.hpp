@@ -16,16 +16,16 @@
 class AssetManager : public Designar::Singleton<AssetManager>
 {
 protected:
-  AssetManager();
+  AssetManager ();
 
 public:
-  ~AssetManager();
+  ~AssetManager ();
 
-  static sf::Texture & getTexture(const std::string &);
-  static std::fstream getFile(const std::string &);
+  static sf::Texture & getTexture (const std::string &);
+  static std::fstream getFile (const std::string &);
 
-  static sf::Uint8 * getBitMask(const std::string &);
-  static sf::Uint8 * getBitMask(const sf::Texture *);
+  static sf::Uint8 * getBitMask (const std::string &);
+  static sf::Uint8 * getBitMask (const sf::Texture *);
 
   // TODO: save files and store them into m_textures
   static void saveScreenShot (sf::Texture &&, size_t);

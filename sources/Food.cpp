@@ -1,8 +1,8 @@
 # include <Food.hpp>
 
 Food::Food (const TileMap & mapita)
-  : tileCount(mapita.getTileCount()),
-    tileSize(mapita.getTileSize())
+: tileCount(mapita.getTileCount()),
+  tileSize(mapita.getTileSize())
 {
   sf::Vector2f position(0, 0);
 
@@ -46,7 +46,7 @@ Food::~Food ()
   setTexture(empty);
 }
 
-void Food::updateTexture()
+void Food::updateTexture ()
 {
   // if don't, texture is flipped downside
   m_texture.display();
@@ -82,7 +82,7 @@ bool Food::eatFood (const sf::Vector2f & floatPos)
   return true;
 }
 
-bool Food::_eat(const sf::Vector2i & position)
+bool Food::_eat (const sf::Vector2i & position)
 {
   if(foodStatus[position.y][position.x])
   {

@@ -1,7 +1,7 @@
 # include <Scene.hpp>
 
 Scene::Scene (Window & l_window, Type l_type)
-  : m_window(l_window), m_type(l_type)
+: m_window(l_window), m_type(l_type)
 {
   // empty
 }
