@@ -5,10 +5,10 @@ Gameplay::Gameplay (Window & window)
   m_map("16x16"),
   m_pacman("Pacman", sf::Vector2f(224,376)),
   m_food(m_map),
-  blueGhost("LightBlue", sf::Vector2f(218, 184), sf::Vector2f(202, 232)),
-  pinkGhost("Pink", sf::Vector2f(218, 184), sf::Vector2f(218, 232)),
-  redGhost("Red", sf::Vector2f(234, 184), sf::Vector2f(234, 232)),
-  yellowGhost("Yellow", sf::Vector2f(234, 184), sf::Vector2f(250, 232))
+  m_blueGhost("LightBlue", sf::Vector2f(218, 184), sf::Vector2f(202, 232)),
+  m_pinkGhost("Pink", sf::Vector2f(218, 184), sf::Vector2f(218, 232)),
+  m_redGhost("Red", sf::Vector2f(234, 184), sf::Vector2f(234, 232)),
+  m_yellowGhost("Yellow", sf::Vector2f(234, 184), sf::Vector2f(250, 232))
 {
   // we eat the foot that is around pacman initialPos so he don't get points from them
   for(size_t x = 223; x <= 224; ++x)
@@ -44,19 +44,19 @@ void Gameplay::updateMembers()
   m_food.eatFood(m_pacman.getPosition());
 
   // ghosts stuff
-  blueGhost.update(getElapsed(), m_map, m_pacman);
-  pinkGhost.update(getElapsed(), m_map, m_pacman);
-  redGhost.update(getElapsed(), m_map, m_pacman);
-  yellowGhost.update(getElapsed(), m_map, m_pacman);
+  m_blueGhost.update(getElapsed(), m_map, m_pacman);
+  m_pinkGhost.update(getElapsed(), m_map, m_pacman);
+  m_redGhost.update(getElapsed(), m_map, m_pacman);
+  m_yellowGhost.update(getElapsed(), m_map, m_pacman);
 
   // trying to kill pacman
-  if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(blueGhost, m_pacman, 254))
+  if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(m_blueGhost, m_pacman, 254))
     m_pacman.attacked();
-  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(pinkGhost, m_pacman, 254))
+  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(m_pinkGhost, m_pacman, 254))
     m_pacman.attacked();
-  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(redGhost, m_pacman, 254))
+  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(m_redGhost, m_pacman, 254))
     m_pacman.attacked();
-  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(yellowGhost, m_pacman, 254))
+  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(m_yellowGhost, m_pacman, 254))
     m_pacman.attacked();
 }
 
@@ -72,8 +72,8 @@ void Gameplay::drawMembers()
   m_window.draw(m_pacman);
 
   // now ghosts xD
-  m_window.draw(blueGhost);
-  m_window.draw(pinkGhost);
-  m_window.draw(redGhost);
-  m_window.draw(yellowGhost);
+  m_window.draw(m_blueGhost);
+  m_window.draw(m_pinkGhost);
+  m_window.draw(m_redGhost);
+  m_window.draw(m_yellowGhost);
 }

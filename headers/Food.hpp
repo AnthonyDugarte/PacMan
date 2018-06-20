@@ -9,7 +9,7 @@ public:
   enum class Type { small = 100, big = 500 }; // points
 
   // take the path way of the map and set all along it the food
-  Food (const TileMap &);
+  Food (const TileMap & map);
   ~Food ();
 
   /* take out the food of that position, so, when intended to work with it,
@@ -20,13 +20,13 @@ public:
 private:
   void updateTexture ();
 
-  bool _eat (const sf::Vector2i &);
+  bool _eat (const sf::Vector2i & position);
 
   // here we have our status
-  std::vector<std::vector<bool>> foodStatus;
+  std::vector<std::vector<bool>> m_foodStatus;
 
   sf::RenderTexture m_texture;
 
-  sf::Vector2i tileCount;
-  sf::Vector2i tileSize;
+  sf::Vector2i m_tileCount;
+  sf::Vector2i m_tileSize;
 };

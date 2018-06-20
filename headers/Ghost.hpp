@@ -17,22 +17,22 @@ class Ghost : public Entity
 {
 public:
   // initPos = position to initiate behavior, originPos = position inside ghost house
-  Ghost (const std::string &,sf::Vector2f, sf::Vector2f);
+  Ghost (const std::string & colorPath, sf::Vector2f initPos, sf::Vector2f originPos);
 
-  void update (const sf::Time &, TileMap &, const Entity &);
+  void update (const sf::Time & dt, TileMap & map, const Entity & pacman);
 
 private:
-  void updateAnimation (const sf::Vector2f &);
-  void updateAnimation (const sf::Time &);
+  void updateAnimation (const sf::Vector2f & movement);
+  void updateAnimation (const sf::Time & dt);
 
   std::vector<sf::Vector2f> m_targetPositions;
   sf::Vector2f m_currentTarget;
 
-  sf::Time deadTime;
-  bool randomActive;
-  int choice;
+  sf::Time m_deadTime;
+  bool m_randomActive;
+  int m_choice;
 
-  Animator animator;
+  Animator m_animator;
   sf::Vector2f m_initPos;
   sf::Vector2f m_originPos;
 

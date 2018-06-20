@@ -15,25 +15,54 @@ AssetManager::~AssetManager ()
   }
 }
 
-sf::Texture & AssetManager::getTexture (const std::string & name)
+sf::Texture & AssetManager::getTexture (const std::string & path)
 {
   //Manager instance
   auto && instance { get_instance() };
 
-  auto && search{ instance.m_textures.find(name) };
+  auto && search{ instance.m_textures.find(path) };
   if (search != instance.m_textures.end())
     return search->second;
 
   sf::Texture new_texture;
 
   std::string prefix{ "assets/" };
-  if (not new_texture.loadFromFile(prefix + name))
-    throw std::invalid_argument("texture could not be loaded: " + prefix + name);
+  if (not new_texture.loadFromFile(prefix + path))
+    throw std::invalid_argument("texture could not be loaded: " + prefix + path);
 
   new_texture.setSmooth(true);
 
-  instance.m_textures[name] = std::move(new_texture);
-  return *&instance.m_textures[name];
+  instance.m_textures[path] = std::move(new_texture);
+  return instance.m_textures[path];
+}
+
+sf::Font & AssetManager::getFont (const std::string & path)
+{
+  auto && instance { get_instance() };
+
+  auto && search{ instance.m_fonts.find(path) };
+  if(search != instance.m_fonts.end())
+    return search->second;
+
+  sf::Font new_font;
+
+  std::string prefix("assets/");
+  if(not new_font.loadFromFile(prefix + path))
+    throw std::invalid_argument("texture could not be loaded: " + prefix + path);
+
+  instance.m_fonts[path] = std::move(new_font);
+  return instance.m_fonts[path];
+}
+
+std::fstream AssetManager::getFile (const std::string & path)
+{
+  std::string prefix{ "assets/" };
+  std::fstream file(prefix + path);
+
+  if(not file.is_open())
+    throw std::invalid_argument("file could not be opened: " + prefix + path);
+
+  return std::move(file);
 }
 
 namespace Helpers
@@ -41,7 +70,7 @@ namespace Helpers
   const std::pair<const sf::Texture *, sf::Uint8 *> getMask (const sf::Texture *);
 }
 
-sf::Uint8 * AssetManager::getBitMask (const std::string & name)
+sf::Uint8 * AssetManager::getBitMask (const std::string & path)
 {
   //Manager instance
   auto && instance { get_instance() };
@@ -51,11 +80,11 @@ sf::Uint8 * AssetManager::getBitMask (const std::string & name)
   //we charge our texture on the Manager so we have just one instance of bitMask per Texture
   try
   {
-    bitMaskTexture = &getTexture(name);
+    bitMaskTexture = &getTexture(path);
   }
   catch(...)
   {
-    throw std::invalid_argument("bitMask could not be loaded: " + name);
+    throw std::invalid_argument("bitMask could not be loaded: " + path);
   }
 
   auto && search{ instance.m_bitmasks.find(&*bitMaskTexture) };
@@ -68,16 +97,16 @@ sf::Uint8 * AssetManager::getBitMask (const std::string & name)
   return *&new_mask.second;
 }
 
-sf::Uint8 * AssetManager::getBitMask (const sf::Texture * bitMaskTexture)
+sf::Uint8 * AssetManager::getBitMask (const sf::Texture * texture)
 {
   //Manager instance
   auto && instance { get_instance() };
 
-  auto && search{ instance.m_bitmasks.find(&*bitMaskTexture) };
+  auto && search{ instance.m_bitmasks.find(&*texture) };
   if(search != instance.m_bitmasks.end())
     return &*search->second;
 
-  auto && new_mask { Helpers::getMask(&*bitMaskTexture) };
+  auto && new_mask { Helpers::getMask(&*texture) };
 
   instance.m_bitmasks.insert(std::move(new_mask));
   return &*new_mask.second;
@@ -98,17 +127,6 @@ namespace Helpers
   }
 }
 
-std::fstream AssetManager::getFile (const std::string & filename)
-{
-  std::string prefix{ "assets/" };
-  std::fstream file(prefix + filename);
-
-  if(not file.is_open())
-    throw std::invalid_argument("file could not be opened: " + prefix + filename);
-
-  return std::move(file);
-}
-
 namespace Helpers
 {
   void __saveScreenShot (sf::Texture texture, size_t capsN)
@@ -126,5 +144,5 @@ void AssetManager::saveScreenShot (sf::Texture texture, size_t capsN)
 
   // set it as a std::asyc  so the copy to image from a texture process don't slow down main loop updates
   // it could have optimizations and better implementation.
-  instance.voidFutures.emplace_back(std::async(std::launch::async, Helpers::__saveScreenShot, std::move(texture), capsN));
+  instance.m_voidFutures.emplace_back(std::async(std::launch::async, Helpers::__saveScreenShot, std::move(texture), capsN));
 }

@@ -64,7 +64,7 @@ sf::Texture & Animator::getFrame () const
   return m_current->getFrame();
 }
 
-void Animator::addFrames(const std::string & name, const std::string & path)
+void Animator::addFrames(const std::string & name, const std::string & pre_path)
 {
   auto && animation { findAnimation(name) };
 
@@ -74,7 +74,7 @@ void Animator::addFrames(const std::string & name, const std::string & path)
     return;
   }
 
-  animation->addFrames(path + "/");
+  animation->addFrames(pre_path + "/");
 }
 
 void Animator::update (const sf::Time & dt)

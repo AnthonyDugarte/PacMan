@@ -9,7 +9,7 @@
 class Gameplay : public Scene
 {
 public:
-  Gameplay (Window &);
+  Gameplay (Window & window);
 
   Type run () override;
 
@@ -20,5 +20,5 @@ private:
   TileMap m_map;
   Food m_food;
   Player m_pacman;
-  Ghost blueGhost, pinkGhost, redGhost, yellowGhost;
+  Ghost m_blueGhost, m_pinkGhost, m_redGhost, m_yellowGhost;
 };

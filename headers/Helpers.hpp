@@ -8,10 +8,10 @@
 namespace Helpers
 {
   // This function takes a sprite and get's it's center in GLOBAL Coordinates
-  sf::Vector2f GetSpriteCenter (const sf::Sprite &);
+  sf::Vector2f GetSpriteCenter (const sf::Sprite & sprite);
 
   // This function takes a sprite and get's it's center in LOCAL Coordinates
-  sf::Vector2f getSpriteLocalCenter (const sf::Sprite &);
+  sf::Vector2f getSpriteLocalCenter (const sf::Sprite & sprite);
 
   /*@Description: this function uses the alpha value of the pixels that are overlapping to
    *      get an amazingly precise collision test of their textures
@@ -20,7 +20,7 @@ namespace Helpers
    *       condition of those textures, it can be used to make different types of collisions
    *         creating a kind of level masks.
    */
-  bool hasCollision (const sf::Sprite &, const sf::Sprite &, sf::Uint8 = 0);
+  bool hasCollision (const sf::Sprite & spriteA, const sf::Sprite & spriteB, sf::Uint8 = 0);
 
   int random (int l, int r);
   float random (float l, float r);

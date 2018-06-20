@@ -15,7 +15,8 @@ public:
 
   void update ();
 
-  void resetAx (Axis = Axis::xy);
+  //@Param: axis to reset, if no param setted, both are reseted
+  void resetAx (Axis axes = Axis::xy);
   int rPressed () const; // are pressed? or should I say, rMoving?
 
 private:

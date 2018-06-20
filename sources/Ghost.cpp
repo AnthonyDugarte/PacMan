@@ -1,23 +1,23 @@
 # include <Ghost.hpp>
 
-Ghost::Ghost (const std::string & color, sf::Vector2f initPos, sf::Vector2f originPos)
+Ghost::Ghost (const std::string & colorPath, sf::Vector2f initPos, sf::Vector2f originPos)
 : m_initPos(initPos), m_originPos(originPos)
 {
-  std::string animPack = "Ghosts/" + color + "/";
+  std::string animPack = "Ghosts/" + colorPath + "/";
 
-  animator.createAnimation("W", sf::seconds(.5f), true);
-  animator.addFrames("W", animPack + "Up");
+  m_animator.createAnimation("W", sf::seconds(.5f), true);
+  m_animator.addFrames("W", animPack + "Up");
 
-  animator.createAnimation("S", sf::seconds(.5f), true);
-  animator.addFrames("S", animPack + "Down");
+  m_animator.createAnimation("S", sf::seconds(.5f), true);
+  m_animator.addFrames("S", animPack + "Down");
 
-  animator.createAnimation("A", sf::seconds(.5f), true);
-  animator.addFrames("A", animPack + "Left");
+  m_animator.createAnimation("A", sf::seconds(.5f), true);
+  m_animator.addFrames("A", animPack + "Left");
 
-  animator.createAnimation("D", sf::seconds(.5f), true);
-  animator.addFrames("D", animPack + "Right");
+  m_animator.createAnimation("D", sf::seconds(.5f), true);
+  m_animator.addFrames("D", animPack + "Right");
 
-  setTexture(animator.getFrame(), true);
+  setTexture(m_animator.getFrame(), true);
   setOrigin(Helpers::getSpriteLocalCenter(*this));
   setPosition(m_initPos);
 
@@ -40,30 +40,30 @@ namespace Helpers
   }
 
   template<int N>
-  void updatePathFinding(Ghost & ghost, TileMap& map, const Entity & player)
+  void updatePathFinding(Ghost & ghost, TileMap& map, const Entity & pacman)
   {
     std::cerr << "invalid updatePathFinding: " << N << std::endl;
   }
 
-  template<> // follow player
-  void updatePathFinding<0>(Ghost & ghost, TileMap& map, const Entity & player)
+  template<> // follow pacman
+  void updatePathFinding<0>(Ghost & ghost, TileMap& map, const Entity & pacman)
   {
-    updatePath(ghost, map, player.getPosition());
+    updatePath(ghost, map, pacman.getPosition());
   }
 
-  template<> // tacle player, 4 steps in front of him
-  void updatePathFinding<1>(Ghost & ghost, TileMap& map, const Entity & player)
+  template<> // tacle pacman, 4 steps in front of him
+  void updatePathFinding<1>(Ghost & ghost, TileMap& map, const Entity & pacman)
   {
     sf::Vector2i tileSize = map.getTileSize();
 
-    float rotation = player.getRotation();
+    float rotation = pacman.getRotation();
 
     Tile *origin = map.getTile(ghost.getPosition().x / tileSize.x, ghost.getPosition().y / tileSize.y);
-    Tile *end = map.getTile(player.getPosition().x / tileSize.x, player.getPosition().y / tileSize.y);
+    Tile *end = map.getTile(pacman.getPosition().x / tileSize.x, pacman.getPosition().y / tileSize.y);
 
     // if it is in front of him, then tacle him xDDD
     if(std::abs(origin->getPos().x - end->getPos().x) <= 4 and std::abs(origin->getPos().y - end->getPos().y) <= 4)
-      updatePathFinding<0>(ghost, map, player);
+      updatePathFinding<0>(ghost, map, pacman);
     else
     {
       int steps = 4;
@@ -82,7 +82,7 @@ namespace Helpers
 
       do
       {
-        goalNode = map.getTile(player.getPosition().x / tileSize.x + sum.x, player.getPosition().y / tileSize.y + sum.y);
+        goalNode = map.getTile(pacman.getPosition().x / tileSize.x + sum.x, pacman.getPosition().y / tileSize.y + sum.y);
 
         decrease(sum.x);
         decrease(sum.y);
@@ -92,13 +92,13 @@ namespace Helpers
       }while(goalNode == nullptr);
 
       if(sum.x == 0 and sum.y == 0) // if not in front, then we just have to do de usual
-        updatePathFinding<0>(ghost, map, player);
+        updatePathFinding<0>(ghost, map, pacman);
       else updatePath(ghost, map, sf::Vector2f(goalNode->getPos().x * tileSize.x, goalNode->getPos().y * tileSize.y ));
     }
   }
 
   template<> // random positions across the map
-  void updatePathFinding<2>(Ghost & ghost, TileMap& map, const Entity & player)
+  void updatePathFinding<2>(Ghost & ghost, TileMap& map, const Entity & pacman)
   {
     sf::Vector2i mapSize = map.getTileCount();
     sf::Vector2i tileSize = map.getTileSize();
@@ -117,29 +117,29 @@ namespace Helpers
   }
 }
 
-void Ghost::update (const sf::Time & dt, TileMap & map, const Entity & player)
+void Ghost::update (const sf::Time & dt, TileMap & map, const Entity & pacman)
 {
-  deadTime -= dt;
+  m_deadTime -= dt;
 
-  if(choice >= 2 and (randomActive or m_targetPositions.empty()))
+  if(m_choice >= 2 and (m_randomActive or m_targetPositions.empty()))
   {
-    Helpers::updatePathFinding<2>(*this, map, player);
-    randomActive = false;
+    Helpers::updatePathFinding<2>(*this, map, pacman);
+    m_randomActive = false;
   }
-  else if(choice == 0)
+  else if(m_choice == 0)
   {
-    if(not player.attackable())
-      choice = 2;
-    else Helpers::updatePathFinding<0>(*this, map, player);
+    if(not pacman.attackable())
+      m_choice = 2;
+    else Helpers::updatePathFinding<0>(*this, map, pacman);
   }
-  else if(choice == 1)
+  else if(m_choice == 1)
   {
-    if(not player.attackable())
-      choice = 2;
-    else Helpers::updatePathFinding<1>(*this, map, player);
+    if(not pacman.attackable())
+      m_choice = 2;
+    else Helpers::updatePathFinding<1>(*this, map, pacman);
   }
 
-  if(deadTime < sf::seconds(0))
+  if(m_deadTime < sf::seconds(0))
     void makeChoice();
 
   if(not m_targetPositions.empty())
@@ -168,28 +168,28 @@ void Ghost::update (const sf::Time & dt, TileMap & map, const Entity & player)
 
 void Ghost::makeChoice()
 {
-  choice = Helpers::random(0, 4); // 0 and 1 are player following behaviors
-  deadTime = sf::seconds(Helpers::random(2.f, 5.f)); // each behavior will last 2 ~ 5 seconds
-  randomActive = true;
+  m_choice = Helpers::random(0, 4); // 0 and 1 are pacman following behaviors
+  m_deadTime = sf::seconds(Helpers::random(2.f, 5.f)); // each behavior will last 2 ~ 5 seconds
+  m_randomActive = true;
 }
 
 
 void Ghost::updateAnimation (const sf::Vector2f & movement)
 {
   if(movement.y < -1.f)
-    animator.switchAnimation("W", true);
+    m_animator.switchAnimation("W", true);
   else if(movement.y > 1.f)
-    animator.switchAnimation("S", true);
+    m_animator.switchAnimation("S", true);
   else if(movement.x < -1.f)
-    animator.switchAnimation("A", true);
+    m_animator.switchAnimation("A", true);
   else if(movement.x > 1.f)
-    animator.switchAnimation("D", true);
+    m_animator.switchAnimation("D", true);
 }
 
 void Ghost::updateAnimation (const sf::Time & dt)
 {
-  animator.update(dt);
-  setTexture(animator.getFrame(), true);
+  m_animator.update(dt);
+  setTexture(m_animator.getFrame(), true);
 }
 
 namespace Helpers

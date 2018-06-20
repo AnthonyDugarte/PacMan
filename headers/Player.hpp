@@ -6,16 +6,17 @@
 class Player : public Entity
 {
 public:
-  Player (const std::string &, sf::Vector2f);
+  //  @Param1: path to animations folder
+  Player (const std::string & path, sf::Vector2f initPos);
 
-  void update (const sf::Time &, TileMap &);
+  void update (const sf::Time & dt, TileMap & map);
 
 private:
-  void updateAnimation (const sf::Time &);
+  void updateAnimation (const sf::Time & dt);
   void updatedRotation ();
 
-  Animation walking;
-  Animation dying;
+  Animation m_walking;
+  Animation m_dying;
 
   sf::Vector2f m_initPos;
 };

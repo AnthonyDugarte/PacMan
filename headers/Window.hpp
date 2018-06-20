@@ -6,10 +6,10 @@ class Window : public sf::RenderWindow
 {
 public:
   // "pacmon for possible default construction forgotten"
-  Window (const std::string & l_title = "Pacmom", const sf::Vector2u & l_size = sf::Vector2u(640, 480));
+  Window (const std::string & title = "Pacmom", const sf::Vector2u & size = sf::Vector2u(640, 480));
   ~Window ();
 
-  void handleEvent (const sf::Event &);
+  void handleEvent (const sf::Event & event);
 
   //  this is a wrapper for clear() fuction
   void beginRender (const sf::Color & BGcolor = sf::Color::Black);

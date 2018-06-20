@@ -9,20 +9,16 @@
 class Entity : public sf::Sprite, public Attributes
 {
 public:
-  Entity ()
-  {
-    // empty
-  }
 
   bool moving () const;
 
-  virtual void update (const sf::Time &, TileMap * = nullptr);
+  virtual void update (const sf::Time & dt, TileMap *map = nullptr);
 protected:
   float m_velocity = 100.f;
-  WSAD pad;
+  WSAD m_pad;
 
-  virtual void moveUp (const sf::Time &);
-  virtual void moveDown (const sf::Time &);
-  virtual void moveLeft (const sf::Time &);
-  virtual void moveRight (const sf::Time &);
+  virtual void moveUp (const sf::Time & dt);
+  virtual void moveDown (const sf::Time & dt);
+  virtual void moveLeft (const sf::Time & dt);
+  virtual void moveRight (const sf::Time & dt);
 };

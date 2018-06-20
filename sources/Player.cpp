@@ -1,14 +1,14 @@
 # include <Player.hpp>
 
 Player::Player (const std::string & animPack, sf::Vector2f initPos)
-: walking(sf::seconds(3.f / 16), true), // it'll be looping
-  dying(sf::seconds(1.5f), false),
+: m_walking(sf::seconds(3.f / 16), true), // it'll be looping
+  m_dying(sf::seconds(1.5f), false),
   m_initPos(initPos)
 {
-  walking.addFrames(animPack + "/walking");
-  dying.addFrames(animPack + "/dying");
+  m_walking.addFrames(animPack + "/walking");
+  m_dying.addFrames(animPack + "/dying");
 
-  setTexture(walking.getFrame(0), true);
+  setTexture(m_walking.getFrame(0), true);
 
   float scale = 14.f / 65.f;
   setScale(scale, scale);
@@ -21,17 +21,17 @@ void Player::update (const sf::Time & dt, TileMap & map)
 {
   if(recentlyAttacked())
   {
-    pad.resetAx(); // not moving
-    setRotation(getRotation() + 90); // dying animation is rotated
+    m_pad.resetAx(); // not moving
+    setRotation(getRotation() + 90); // m_dying animation is rotated
   }
 
-  if(not attackable() and not dead() and dying.getElapsed() - sf::seconds(1) > dying.getDuration())
+  if(not attackable() and not dead() and m_dying.getElapsed() - sf::seconds(1) > m_dying.getDuration())
   {
     restoreAttackable();
-    setRotation(-90); // restore dying rotation
+    setRotation(-90); // restore m_dying rotation
     setPosition(m_initPos);
 
-    dying.reset();
+    m_dying.reset();
   }
 
   // for(size_t i { 4 }; --i; healted()); // restore lifes
@@ -48,25 +48,25 @@ void Player::updateAnimation (const sf::Time & dt)
 
   if(moving())
   {
-    walking.update(dt);
-    setTexture(walking.getFrame(), true);
+    m_walking.update(dt);
+    setTexture(m_walking.getFrame(), true);
   }
   else if(not attackable())
   {
-    setTexture(dying.getFrame(), true);
-    dying.update(dt);
+    setTexture(m_dying.getFrame(), true);
+    m_dying.update(dt);
   }
-  else setTexture(walking.getFrame(0), true); // not moving
+  else setTexture(m_walking.getFrame(0), true); // not moving
 }
 
 void Player::updatedRotation ()
 {
-  if(pad.W)
+  if(m_pad.W)
     setRotation(-90.f);
-  else if(pad.S)
+  else if(m_pad.S)
     setRotation(90.f);
-  else if(pad.A)
+  else if(m_pad.A)
     setRotation(180.f);
-  else if(pad.D)
+  else if(m_pad.D)
     setRotation(0.f);
 }

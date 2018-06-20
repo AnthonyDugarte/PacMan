@@ -18,12 +18,12 @@ const std::string & TileMap::name () const
 
 void TileMap::updateWSAD (WSAD & pad, const sf::Vector2f & floatPos)
 {
-  sf::Vector2i position(floatPos.x / tileSize.x, floatPos.y / tileSize.y);
+  sf::Vector2i position(floatPos.x / m_tileSize.x, floatPos.y / m_tileSize.y);
   sf::Vector2i tilePosition;
-  tilePosition.x = tileSize.x - (static_cast<int>(floatPos.x) % tileSize.x);
-  tilePosition.y = tileSize.y - (static_cast<int>(floatPos.y) % tileSize.y);
+  tilePosition.x = m_tileSize.x - (static_cast<int>(floatPos.x) % m_tileSize.x);
+  tilePosition.y = m_tileSize.y - (static_cast<int>(floatPos.y) % m_tileSize.y);
 
-  sf::Vector2i Tilehalf = tileSize / 2;
+  sf::Vector2i Tilehalf = m_tileSize / 2;
 
   /* Brief explanaton: we check our environment, if it's walkable, then we don't
    * uncheck them but, we are working directly on the path (TODO: check this),
@@ -48,12 +48,12 @@ void TileMap::updateWSAD (WSAD & pad, const sf::Vector2f & floatPos)
 
 sf::Vector2i TileMap::getTileSize () const
 {
-  return tileSize;
+  return m_tileSize;
 }
 
 sf::Vector2i TileMap::getTileCount () const
 {
-  return { tiles.size() != 0 ? static_cast<int>(tiles.at(0).size()) : 0, static_cast<int>(tiles.size()) };
+  return { m_tiles.size() != 0 ? static_cast<int>(m_tiles.at(0).size()) : 0, static_cast<int>(m_tiles.size()) };
 }
 
 Tile* TileMap::getTile(int x, int y)
@@ -61,12 +61,12 @@ Tile* TileMap::getTile(int x, int y)
   if(not validPos(x, y))
     return nullptr;
 
-  return &tiles[y][x];
+  return &m_tiles[y][x];
 }
 
 bool TileMap::isWalkable (float x, float y) const
 {
-  return _walkable(x / tileSize.x, y / tileSize.y);
+  return _walkable(x / m_tileSize.x, y / m_tileSize.y);
 }
 
 bool TileMap::_walkable (float x, float y) const
@@ -74,17 +74,17 @@ bool TileMap::_walkable (float x, float y) const
   if(not validPos(x, y))
     return false;
 
-  return tiles.at(y).at(x).isPath();
+  return m_tiles.at(y).at(x).isPath();
 }
 
 sf::Vector2f TileMap::getTileCenter (const sf::Vector2f & pos) const
 {
-  return sf::Vector2f(static_cast<int>(pos.x / tileSize.x) * tileSize.x + (tileSize.x >> 1),static_cast<int>(pos.y / tileSize.y) * tileSize.y + (tileSize.y >> 1));
+  return sf::Vector2f(static_cast<int>(pos.x / m_tileSize.x) * m_tileSize.x + (m_tileSize.x >> 1),static_cast<int>(pos.y / m_tileSize.y) * m_tileSize.y + (m_tileSize.y >> 1));
 }
 
 void TileMap::resetNodes()
 {
-  for(auto && y : tiles)
+  for(auto && y : m_tiles)
     for(auto && x : y.second)
     {
       x.second.H = x.second.G = x.second.F = 0;
@@ -94,9 +94,9 @@ void TileMap::resetNodes()
 
 bool TileMap::validPos(float x, float y) const
 {
-  if(y >= tiles.size() or tiles.size() == 0 or x < 0 or y < 0)
+  if(y >= m_tiles.size() or m_tiles.size() == 0 or x < 0 or y < 0)
     return false;
-  if(x >= tiles.at(0).size())
+  if(x >= m_tiles.at(0).size())
     return false;
 
   return true;
@@ -119,15 +119,15 @@ namespace Helpers
 
       std::getline(mapPath, str, '\n');
       {
-        tile_map.tileSize.x = std::stoi(str.substr(0, str.find(",")));
-        tile_map.tileSize.y = std::stoi(str.substr(str.find(",") + 1));
+        tile_map.m_tileSize.x = std::stoi(str.substr(0, str.find(",")));
+        tile_map.m_tileSize.y = std::stoi(str.substr(str.find(",") + 1));
       }
 
       std::getline(mapPath, str, '\n');
       int xTiles = std::stoi(str.substr(0, str.find(",")));
       int yTiles = std::stoi(str.substr(str.find(",") + 1));
 
-      auto && tiles = tile_map.tiles;
+      auto && tiles = tile_map.m_tiles;
       for(int y = 0; y < yTiles; ++y)
         for(int x = 0; x < xTiles; ++x)
         {
@@ -161,7 +161,7 @@ namespace Helpers
     }
     catch(...) // if wasn't taken, then it is not available... true logic
     {
-      tile_map.tiles.clear();
+      tile_map.m_tiles.clear();
       return false;
     }
 
@@ -180,7 +180,7 @@ namespace Helpers
 
     for(int y = 0; y < inf.tileNumber.y; ++y)
       for(int x = 0; x < inf.tileNumber.x; ++x)
-        tile_map.tiles[y][x].setPos({ x, y });
+        tile_map.m_tiles[y][x].setPos({ x, y });
 
     /* number of capes the world is going to have, what I say is: number of different
      * textures to render, their priotity goes from low->hight.
@@ -237,7 +237,7 @@ namespace Helpers
           if(type != Tile::Type::empty) // if your tile is not an empty one
           {
             // we mark it in our vector
-            auto && lilTile = tile_map.tiles[currPos.y][currPos.x];
+            auto && lilTile = tile_map.m_tiles[currPos.y][currPos.x];
             lilTile.setType(type);
 
             if(not (not tile_map.m_showPath and type == Tile::Type::path))
@@ -282,7 +282,7 @@ namespace Helpers
      mapInfo << inf.tileSize.x << "," << inf.tileSize.y << "\n"; // for map.size, I'm lazy why should we divide texture size with tiles number
      mapInfo << inf.tileNumber.x << "," << inf.tileNumber.y << "\n"; // number of tiles (for vector)
 
-    for(auto && y : tile_map.tiles)
+    for(auto && y : tile_map.m_tiles)
     {
       for(auto && x : y.second) // pure magic
         mapInfo << static_cast<int>(x.second.getType()) << ","; // ajaaaa, we have to take out the last coma
@@ -291,7 +291,7 @@ namespace Helpers
       mapInfo << "\n";
     }
 
-    tile_map.tileSize = inf.tileSize;
+    tile_map.m_tileSize = inf.tileSize;
 
     std::clog << "successful map Creation\n"; // cute log report of success
   }

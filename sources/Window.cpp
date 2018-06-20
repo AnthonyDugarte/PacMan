@@ -1,8 +1,8 @@
 # include <Window.hpp>
 
-Window::Window (const std::string & l_title, const sf::Vector2u & l_size)
-: m_windowTitle(l_title),
-  m_windowSize(l_size)
+Window::Window (const std::string & title, const sf::Vector2u & size)
+: m_windowTitle(title),
+  m_windowSize(size)
 {
   std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
 

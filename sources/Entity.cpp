@@ -2,53 +2,53 @@
 
 bool Entity::moving () const
 {
-  return pad.rPressed() != 0;
+  return m_pad.rPressed() != 0;
 }
 
 void Entity::update (const sf::Time & dt, TileMap * map)
 {
-  pad.update();
+  m_pad.update();
   if(map)
-    map->updateWSAD(pad, getPosition());
+    map->updateWSAD(m_pad, getPosition());
 
-  if(pad.W)
+  if(m_pad.W)
   {
     moveUp(dt);
 
     if(map and Helpers::hasCollision(*this, *map))
     {
-      pad.W = false;
+      m_pad.W = false;
       moveUp(-dt);
     }
   }
-  else if(pad.S)
+  else if(m_pad.S)
   {
     moveDown(dt);
 
     if(map and Helpers::hasCollision(*this, *map))
     {
-      pad.S = false;
+      m_pad.S = false;
       moveDown(-dt);
     }
   }
 
-  if(pad.A)
+  if(m_pad.A)
   {
     moveLeft(dt);
 
     if(map and Helpers::hasCollision(*this, *map))
     {
-      pad.A = false;
+      m_pad.A = false;
       moveLeft(-dt);
     }
   }
-  else if(pad.D)
+  else if(m_pad.D)
   {
     moveRight(dt);
 
     if(map and Helpers::hasCollision(*this, *map))
     {
-      pad.D = false;
+      m_pad.D = false;
       moveRight(-dt);
     }
   }

@@ -22,13 +22,14 @@ public:
     // empty
   }
 
-  Tile (Type);
+  Tile (Type type);
 
   const Type & getType () const;
-  void setType(Type);
+  void setType(Type newType);
 
   const sf::Vector2i & getPos() const;
-  void setPos(const sf::Vector2i &);
+  // local Position, in grid coordinates
+  void setPos(const sf::Vector2i & pos);
 
   bool isPath () const;
 

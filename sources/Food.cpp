@@ -1,29 +1,29 @@
 # include <Food.hpp>
 
 Food::Food (const TileMap & mapita)
-: tileCount(mapita.getTileCount()),
-  tileSize(mapita.getTileSize())
+: m_tileCount(mapita.getTileCount()),
+  m_tileSize(mapita.getTileSize())
 {
   sf::Vector2f position(0, 0);
 
   auto && foodTexture = AssetManager::getTexture("map/" + mapita.name() + "/food.png");
   sf::Sprite foodSprite(foodTexture);
 
-  std::vector<bool> XaxisInitData(tileCount.x, false);
-  foodStatus.insert(foodStatus.begin(), tileCount.y, XaxisInitData);
+  std::vector<bool> XaxisInitData(m_tileCount.x, false);
+  m_foodStatus.insert(m_foodStatus.begin(), m_tileCount.y, XaxisInitData);
 
-  m_texture.create(tileCount.x * tileSize.x, tileCount.y * tileSize.y);
+  m_texture.create(m_tileCount.x * m_tileSize.x, m_tileCount.y * m_tileSize.y);
   m_texture.setSmooth(true);
 
-  while(position.y < tileCount.y)
+  while(position.y < m_tileCount.y)
   {
     position.x = 0;
-    while(position.x < tileCount.x)
+    while(position.x < m_tileCount.x)
     {
       if(mapita._walkable(position.x, position.y))
       {
-        foodStatus[position.y][position.x] = true;
-        foodSprite.setPosition(position.x * tileSize.x, position.y * tileSize.y);
+        m_foodStatus[position.y][position.x] = true;
+        foodSprite.setPosition(position.x * m_tileSize.x, position.y * m_tileSize.y);
         m_texture.draw(foodSprite);
       }
 
@@ -56,10 +56,10 @@ void Food::updateTexture ()
 bool Food::eatFood (const sf::Vector2f & floatPos)
 {
   // relative position to the grid
-  sf::Vector2i position(floatPos.x / tileSize.x, floatPos.y / tileSize.y);
+  sf::Vector2i position(floatPos.x / m_tileSize.x, floatPos.y / m_tileSize.y);
 
   // if not in the grid, nothing to do
-  if(position.x >= tileCount.x or position.y >= tileCount.y)
+  if(position.x >= m_tileCount.x or position.y >= m_tileCount.y)
     return false;
 
   // if already eaten, nothing to do
@@ -68,13 +68,13 @@ bool Food::eatFood (const sf::Vector2f & floatPos)
 
   // our empty grid, POSIBBLE TODO: use a RectShape
   sf::Image emptyImg;
-  emptyImg.create(tileSize.x, tileSize.y, sf::Color(0, 0, 0, 255));
+  emptyImg.create(m_tileSize.x, m_tileSize.y, sf::Color(0, 0, 0, 255));
 
   sf::Texture emptyTexture;
   emptyTexture.loadFromImage(emptyImg);
 
   sf::Sprite empty(emptyTexture);
-  empty.setPosition(position.x * tileSize.x, position.y * tileSize.y);
+  empty.setPosition(position.x * m_tileSize.x, position.y * m_tileSize.y);
 
   m_texture.draw(empty);
   updateTexture();
@@ -84,9 +84,9 @@ bool Food::eatFood (const sf::Vector2f & floatPos)
 
 bool Food::_eat (const sf::Vector2i & position)
 {
-  if(foodStatus[position.y][position.x])
+  if(m_foodStatus[position.y][position.x])
   {
-    foodStatus[position.y][position.x] = false;
+    m_foodStatus[position.y][position.x] = false;
     return true;
   }
 

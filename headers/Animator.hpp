@@ -23,9 +23,9 @@ public:
   sf::Texture & getFrame () const;
 
   /* @Param 1: Animation name
-   * @Param 2: Path to it's folder
+   * @Param 2: path to it's folder
    */
-  void addFrames(const std::string & name, const std::string & path);
+  void addFrames(const std::string & name, const std::string & pre_path);
 
   virtual void update (const sf::Time & dt);
 

@@ -82,9 +82,9 @@ void Animation::addFrame (const std::string & path)
   m_frames.push_back(&AssetManager::getTexture(path));
 }
 
-void Animation::addFrames (const std::string & path)
+void Animation::addFrames (const std::string & pre_path)
 {
-  std::fstream framesInfo { AssetManager::getFile(path + "/frames.info") };
+  std::fstream framesInfo { AssetManager::getFile(pre_path + "/frames.info") };
 
   std::string str;
 
@@ -97,13 +97,13 @@ void Animation::addFrames (const std::string & path)
     reverse_animation = true;
   else if(str == "F")
     reverse_animation = false;
-  else throw std::invalid_argument("not a valid condition: " + str);
+  else throw std::invalid_argument("not a valid condition: " + str + " on file: " + pre_path + "/frames.info");
 
   std::getline(framesInfo, str, '\n');
   std::string & sufix { str };
 
   for(size_t i { 0 }; i < iterations; ++i)
-    addFrame(path + "/" + std::to_string(i) + sufix);
+    addFrame(pre_path + "/" + std::to_string(i) + sufix);
 
   if(reverse_animation)
     for(size_t it{ size() }; --it; ) // frame 0 won't be setted twice, it's the starting point

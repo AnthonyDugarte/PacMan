@@ -14,5 +14,5 @@ public:
 private:
   Window m_window;
 
-  Scene::Type type;
+  Scene::Type m_type;
 };
