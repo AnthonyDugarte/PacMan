@@ -17,7 +17,7 @@ Player::Player (const std::string & animPack, sf::Vector2f initPos)
   setPosition(m_initPos);
 }
 
-void Player::update (const sf::Time & dt, TileMap * map)
+void Player::update (const sf::Time & dt, TileMap & map)
 {
   if(recentlyAttacked())
   {
@@ -25,7 +25,7 @@ void Player::update (const sf::Time & dt, TileMap * map)
     setRotation(getRotation() + 90); // dying animation is rotated
   }
 
-  if(not attackable() and dying.getElapsed() - sf::seconds(1) > dying.getDuration())
+  if(not attackable() and not dead() and dying.getElapsed() - sf::seconds(1) > dying.getDuration())
   {
     restoreAttackable();
     setRotation(-90); // restore dying rotation
@@ -34,18 +34,18 @@ void Player::update (const sf::Time & dt, TileMap * map)
     dying.reset();
   }
 
-  if(attackable() and dead())
-    return;
-    // for(size_t i { 4 }; --i; healted()); // restore lifes
+  // for(size_t i { 4 }; --i; healted()); // restore lifes
 
   if(attackable())
-    Entity::update(dt, &*map);
+    Entity::update(dt, &map);
 
   updateAnimation(dt);
 }
 
 void Player::updateAnimation (const sf::Time & dt)
 {
+  updatedRotation();
+
   if(moving())
   {
     walking.update(dt);
@@ -59,30 +59,14 @@ void Player::updateAnimation (const sf::Time & dt)
   else setTexture(walking.getFrame(0), true); // not moving
 }
 
-void Player::moveUp (const sf::Time & dt)
+void Player::updatedRotation ()
 {
-  Entity::moveUp(dt);
   if(pad.W)
     setRotation(-90.f);
-}
-
-void Player::moveDown (const sf::Time & dt)
-{
-  Entity::moveDown(dt);
-  if(pad.S)
+  else if(pad.S)
     setRotation(90.f);
-}
-
-void Player::moveLeft (const sf::Time & dt)
-{
-  Entity::moveLeft(dt);
-  if(pad.A)
+  else if(pad.A)
     setRotation(180.f);
-}
-
-void Player::moveRight (const sf::Time & dt)
-{
-  Entity::moveRight(dt);
-  if(pad.D)
+  else if(pad.D)
     setRotation(0.f);
 }

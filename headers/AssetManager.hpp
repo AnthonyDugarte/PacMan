@@ -27,8 +27,8 @@ public:
   static sf::Uint8 * getBitMask (const std::string &);
   static sf::Uint8 * getBitMask (const sf::Texture *);
 
-  // TODO: save files and store them into m_textures
-  static void saveScreenShot (sf::Texture &&, size_t);
+  // TODO: save files and store them into m_textures, instead of just pictures
+  static void saveScreenShot (sf::Texture, size_t);
 
 private:
   std::map <std::string, sf::Texture> m_textures;

@@ -5,11 +5,13 @@
 class WSAD
 {
 public:
+  enum class Direction { Up, Down, Left, Right, none };
+
   enum class Axis{ xy, x, y };
 
-  bool W = false, S = false, A = false, D = false;
+  bool W, S, A, D;
 
-  WSAD ();
+  WSAD (bool = false);
 
   void update ();
 

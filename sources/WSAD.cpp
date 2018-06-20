@@ -1,6 +1,7 @@
 # include <WSAD.hpp>
 
-WSAD::WSAD ()
+WSAD::WSAD (bool state)
+: W(state), S(state), A(state), D(state)
 {
   // empty
 }

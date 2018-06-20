@@ -50,6 +50,9 @@ void Attributes::inmortal ()
 
 bool Attributes::attackable () const
 {
+  if(dead())
+    return false;
+  
   return m_attackable;
 }
 

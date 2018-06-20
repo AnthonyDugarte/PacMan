@@ -8,15 +8,11 @@ class Player : public Entity
 public:
   Player (const std::string &, sf::Vector2f);
 
-  void update (const sf::Time &, TileMap * = nullptr);
+  void update (const sf::Time &, TileMap &);
 
 private:
   void updateAnimation (const sf::Time &);
-
-  void moveUp (const sf::Time &);
-  void moveDown (const sf::Time &);
-  void moveLeft (const sf::Time &);
-  void moveRight (const sf::Time &);
+  void updatedRotation ();
 
   Animation walking;
   Animation dying;

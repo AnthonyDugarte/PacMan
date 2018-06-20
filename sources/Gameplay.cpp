@@ -4,38 +4,76 @@ Gameplay::Gameplay (Window & window)
 : Scene(window, Scene::Type::gameplay),
   m_map("16x16"),
   m_pacman("Pacman", sf::Vector2f(224,376)),
-  m_food(m_map)
+  m_food(m_map),
+  blueGhost("LightBlue", sf::Vector2f(218, 184), sf::Vector2f(202, 232)),
+  pinkGhost("Pink", sf::Vector2f(218, 184), sf::Vector2f(218, 232)),
+  redGhost("Red", sf::Vector2f(234, 184), sf::Vector2f(234, 232)),
+  yellowGhost("Yellow", sf::Vector2f(234, 184), sf::Vector2f(250, 232))
 {
-  m_food.eatFood(sf::Vector2f(224,376));
-  m_food.eatFood(sf::Vector2f(223,376));
+  // we eat the foot that is around pacman initialPos so he don't get points from them
+  for(size_t x = 223; x <= 224; ++x)
+    m_food.eatFood(sf::Vector2f(x, 376));
 }
 
 Scene::Type Gameplay::run ()
 {
   restartClock();
+
   while(not m_window.isDone())
   {
     sf::Event event;
     while(m_window.pollEvent(event))
-    {
-      m_window.handleEvent(event);
+      m_window.handleEvent(event); // window stuff
 
-      if(event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Space)
-        m_pacman.attacked();
-    }
-
-    m_pacman.update(getElapsed(), &m_map);
-
-    m_food.eatFood(m_pacman.getPosition());
+    updateMembers();
 
     m_window.beginRender(sf::Color::Black);
-    m_window.draw(m_map);
-    m_window.draw(m_food);
-    m_window.draw(m_pacman);
+    drawMembers();
     m_window.endRender();
 
     restartClock();
   }
 
   return Scene::Type::end;
+}
+
+void Gameplay::updateMembers()
+{
+  // pacman stuff
+  m_pacman.update(getElapsed(), m_map);
+  m_food.eatFood(m_pacman.getPosition());
+
+  // ghosts stuff
+  blueGhost.update(getElapsed(), m_map, m_pacman);
+  pinkGhost.update(getElapsed(), m_map, m_pacman);
+  redGhost.update(getElapsed(), m_map, m_pacman);
+  yellowGhost.update(getElapsed(), m_map, m_pacman);
+
+  // trying to kill pacman
+  if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(blueGhost, m_pacman, 254))
+    m_pacman.attacked();
+  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(pinkGhost, m_pacman, 254))
+    m_pacman.attacked();
+  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(redGhost, m_pacman, 254))
+    m_pacman.attacked();
+  else if(not m_pacman.dead() and m_pacman.attackable() and Helpers::hasCollision(yellowGhost, m_pacman, 254))
+    m_pacman.attacked();
+}
+
+void Gameplay::drawMembers()
+{
+  // we draw map first
+  m_window.draw(m_map);
+
+  //then the food
+  m_window.draw(m_food);
+
+  // then pacman, or shoud ghosts be drawn first? I don't know
+  m_window.draw(m_pacman);
+
+  // now ghosts xD
+  m_window.draw(blueGhost);
+  m_window.draw(pinkGhost);
+  m_window.draw(redGhost);
+  m_window.draw(yellowGhost);
 }
