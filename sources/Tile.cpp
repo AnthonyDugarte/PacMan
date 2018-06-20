@@ -1,15 +1,29 @@
 # include <Tile.hpp>
 
-Tile::Tile (Type type, const sf::IntRect & bounds)
-: m_type(type),
-  m_globalBounds(bounds)
+Tile::Tile (Type type)
+: m_type(type)
 {
   // empty
 }
 
-Tile::Type Tile::getType () const
+const Tile::Type & Tile::getType () const
 {
   return m_type;
+}
+
+void Tile::setType(Type type)
+{
+  m_type = type;
+}
+
+const sf::Vector2i & Tile::getPos() const
+{
+  return m_tilePos;
+}
+
+void Tile::setPos(const sf::Vector2i & newPos)
+{
+  m_tilePos = newPos;
 }
 
 bool Tile::isPath () const

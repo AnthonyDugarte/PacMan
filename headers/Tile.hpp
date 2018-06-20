@@ -16,17 +16,34 @@ public:
     empty = 9
   };
 
-  Tile () = delete;
-  Tile (Type, const sf::IntRect &);
+  Tile ()
+  : m_type(Type::empty)
+  {
+    // empty
+  }
 
-  Type getType () const;
+  Tile (Type);
+
+  const Type & getType () const;
+  void setType(Type);
+
+  const sf::Vector2i & getPos() const;
+  void setPos(const sf::Vector2i &);
+
   bool isPath () const;
+
+  /* A* stuff*/
+  int H; // movement cost to goal
+  int G; // movement cost of entire path
+  int F; // H + G
+  Tile* parentNode;
+  /**/
 
   static TilesInfo getTilesInfo (const std::string &);
 
 private:
+  sf::Vector2i m_tilePos;
   Type m_type;
-  sf::IntRect m_globalBounds;
 };
 
 struct TilesInfo

@@ -53,25 +53,54 @@ sf::Vector2i TileMap::getTileSize () const
 
 sf::Vector2i TileMap::getTileCount () const
 {
-  return { tiles.size() > 0 ? static_cast<int>(tiles[0].size()) : 0, static_cast<int>(tiles.size()) };
+  return { tiles.size() != 0 ? static_cast<int>(tiles.at(0).size()) : 0, static_cast<int>(tiles.size()) };
+}
+
+Tile* TileMap::getTile(int x, int y)
+{
+  if(not validPos(x, y))
+    return nullptr;
+
+  return &tiles[y][x];
 }
 
 bool TileMap::isWalkable (float x, float y) const
 {
-  return _walkable(y / tileSize.y, x / tileSize.x);
+  return _walkable(x / tileSize.x, y / tileSize.y);
 }
 
 bool TileMap::_walkable (float x, float y) const
 {
-  if(y >= tiles.size() or tiles.size() == 0)
+  if(not validPos(x, y))
     return false;
 
-  if(x >= tiles[0].size())
-    return false;
-
-  return tiles[y][x] == Tile::Type::path;
+  return tiles.at(y).at(x).isPath();
 }
 
+sf::Vector2f TileMap::getTileCenter (const sf::Vector2f & pos) const
+{
+  return sf::Vector2f(static_cast<int>(pos.x / tileSize.x) * tileSize.x + (tileSize.x >> 1),static_cast<int>(pos.y / tileSize.y) * tileSize.y + (tileSize.y >> 1));
+}
+
+void TileMap::resetNodes()
+{
+  for(auto && y : tiles)
+    for(auto && x : y.second)
+    {
+      x.second.H = x.second.G = x.second.F = 0;
+      x.second.parentNode = nullptr;
+    }
+}
+
+bool TileMap::validPos(float x, float y) const
+{
+  if(y >= tiles.size() or tiles.size() == 0 or x < 0 or y < 0)
+    return false;
+  if(x >= tiles.at(0).size())
+    return false;
+
+  return true;
+}
 
 namespace Helpers
 {
@@ -95,18 +124,18 @@ namespace Helpers
       }
 
       std::getline(mapPath, str, '\n');
-      {
-        int xTiles = std::stoi(str.substr(0, str.find(",")));
-        int yTiles = std::stoi(str.substr(str.find(",") + 1));
+      int xTiles = std::stoi(str.substr(0, str.find(",")));
+      int yTiles = std::stoi(str.substr(str.find(",") + 1));
 
-        std::vector<Tile::Type> XaxisInitData(xTiles);
-        tile_map.tiles.insert(tile_map.tiles.begin(), yTiles, XaxisInitData);
-      }
-
-      for(auto && yType : tile_map.tiles)
-        for(auto && xType : yType)
+      auto && tiles = tile_map.tiles;
+      for(int y = 0; y < yTiles; ++y)
+        for(int x = 0; x < xTiles; ++x)
         {
-          xType = static_cast<Tile::Type>(mapPath.get() - '0'); // hell of a trick
+          auto && lilTile = tiles[y][x];
+          lilTile.setType(static_cast<Tile::Type>(mapPath.get() - '0')); // hell of a trick
+          lilTile.setPos({ x, y});
+          // lilTile.tilePos.x = x;
+          // lilTile.tilePos.y = y;
           mapPath.get(); // bye comma, bye '\n'
         }
 
@@ -142,22 +171,16 @@ namespace Helpers
 
   void generateMap (TileMap & tile_map, const TilesInfo & inf)
   {
-    {
-      // we are creating our (x, y) vector accordint to the map size (tileNumber SFML's confussing pair name)
-
-      // our X-axes are ful of empty tiles
-      std::vector<Tile::Type> XaxisInitData(inf.tileNumber.x, Tile::Type::empty);
-
-      // our Y-axes are ful of X-axes empy tiled
-      tile_map.tiles.insert(tile_map.tiles.begin(), inf.tileNumber.y, XaxisInitData);
-    }
-
     // where we hare going to draw the map, for the sake of clarity
 
     // defining the size of the map according to number of tiles and their size
     tile_map.m_texture.create(inf.tileNumber.x * inf.tileSize.x, inf.tileNumber.y * inf.tileSize.y);
     // cute and smoothy picture.
     tile_map.m_texture.setSmooth(true);
+
+    for(int y = 0; y < inf.tileNumber.y; ++y)
+      for(int x = 0; x < inf.tileNumber.x; ++x)
+        tile_map.tiles[y][x].setPos({ x, y });
 
     /* number of capes the world is going to have, what I say is: number of different
      * textures to render, their priotity goes from low->hight.
@@ -210,10 +233,12 @@ namespace Helpers
           // we get our tile type (which is a number, strings would be so damn awful to look at)
           Tile::Type type = static_cast<Tile::Type>(std::stoi(str.substr(PosZero(pos), newPos - PosZero(pos))));
 
+
           if(type != Tile::Type::empty) // if your tile is not an empty one
           {
             // we mark it in our vector
-            tile_map.tiles[currPos.y][currPos.x] = type;
+            auto && lilTile = tile_map.tiles[currPos.y][currPos.x];
+            lilTile.setType(type);
 
             if(not (not tile_map.m_showPath and type == Tile::Type::path))
             {
@@ -257,10 +282,10 @@ namespace Helpers
      mapInfo << inf.tileSize.x << "," << inf.tileSize.y << "\n"; // for map.size, I'm lazy why should we divide texture size with tiles number
      mapInfo << inf.tileNumber.x << "," << inf.tileNumber.y << "\n"; // number of tiles (for vector)
 
-    for(auto && yType : tile_map.tiles)
+    for(auto && y : tile_map.tiles)
     {
-      for(auto && xType : yType) // pure magic
-        mapInfo << static_cast<int>(xType) << ","; // ajaaaa, we have to take out the last coma
+      for(auto && x : y.second) // pure magic
+        mapInfo << static_cast<int>(x.second.getType()) << ","; // ajaaaa, we have to take out the last coma
 
       mapInfo.seekp(static_cast<int>(mapInfo.tellp()) - 1);
       mapInfo << "\n";
