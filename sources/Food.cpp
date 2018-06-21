@@ -53,18 +53,18 @@ void Food::updateTexture ()
   setTexture(m_texture.getTexture());
 }
 
-bool Food::eatFood (const sf::Vector2f & floatPos)
+int Food::eatFood (const sf::Vector2f & floatPos)
 {
   // relative position to the grid
   sf::Vector2i position(floatPos.x / m_tileSize.x, floatPos.y / m_tileSize.y);
 
   // if not in the grid, nothing to do
   if(position.x >= m_tileCount.x or position.y >= m_tileCount.y)
-    return false;
+    return 0;
 
   // if already eaten, nothing to do
   if(not _eat(position))
-    return false;
+    return 0;
 
   // our empty grid, POSIBBLE TODO: use a RectShape
   sf::Image emptyImg;
@@ -79,7 +79,7 @@ bool Food::eatFood (const sf::Vector2f & floatPos)
   m_texture.draw(empty);
   updateTexture();
 
-  return true;
+  return static_cast<int>(Type::small);
 }
 
 bool Food::_eat (const sf::Vector2i & position)

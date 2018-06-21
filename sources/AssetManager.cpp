@@ -46,7 +46,7 @@ sf::Font & AssetManager::getFont (const std::string & path)
 
   sf::Font new_font;
 
-  std::string prefix("assets/");
+  std::string prefix("assets/font/");
   if(not new_font.loadFromFile(prefix + path))
     throw std::invalid_argument("texture could not be loaded: " + prefix + path);
 

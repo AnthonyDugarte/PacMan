@@ -15,7 +15,7 @@ public:
   /* take out the food of that position, so, when intended to work with it,
    * one call is all you have for each piece of food
    */
-  bool eatFood (const sf::Vector2f & position);
+  int eatFood (const sf::Vector2f & position);
 
 private:
   void updateTexture ();

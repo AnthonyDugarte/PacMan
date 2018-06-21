@@ -140,7 +140,7 @@ void Ghost::update (const sf::Time & dt, TileMap & map, const Entity & pacman)
   }
 
   if(m_deadTime < sf::seconds(0))
-    void makeChoice();
+    makeChoice();
 
   if(not m_targetPositions.empty())
   {

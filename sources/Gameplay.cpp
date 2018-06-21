@@ -8,11 +8,14 @@ Gameplay::Gameplay (Window & window)
   m_blueGhost("LightBlue", sf::Vector2f(218, 184), sf::Vector2f(202, 232)),
   m_pinkGhost("Pink", sf::Vector2f(218, 184), sf::Vector2f(218, 232)),
   m_redGhost("Red", sf::Vector2f(234, 184), sf::Vector2f(234, 232)),
-  m_yellowGhost("Yellow", sf::Vector2f(234, 184), sf::Vector2f(250, 232))
+  m_yellowGhost("Yellow", sf::Vector2f(234, 184), sf::Vector2f(250, 232)),
+  m_hud(m_pacman)
 {
   // we eat the foot that is around pacman initialPos so he don't get points from them
   for(size_t x = 223; x <= 224; ++x)
     m_food.eatFood(sf::Vector2f(x, 376));
+
+  m_hud.fitInWindow(m_window);
 }
 
 Scene::Type Gameplay::run ()
@@ -41,7 +44,7 @@ void Gameplay::updateMembers()
 {
   // pacman stuff
   m_pacman.update(getElapsed(), m_map);
-  m_food.eatFood(m_pacman.getPosition());
+  m_hud.update(m_food.eatFood(m_pacman.getPosition()));
 
   // ghosts stuff
   m_blueGhost.update(getElapsed(), m_map, m_pacman);
@@ -76,4 +79,7 @@ void Gameplay::drawMembers()
   m_window.draw(m_pinkGhost);
   m_window.draw(m_redGhost);
   m_window.draw(m_yellowGhost);
+
+  // HUD in action
+  m_window.draw(m_hud);
 }

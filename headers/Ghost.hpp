@@ -31,7 +31,7 @@ private:
   sf::Time m_deadTime;
   bool m_randomActive;
   int m_choice;
-
+  
   Animator m_animator;
   sf::Vector2f m_initPos;
   sf::Vector2f m_originPos;

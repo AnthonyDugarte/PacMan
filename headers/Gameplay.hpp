@@ -6,6 +6,8 @@
 # include <Food.hpp>
 # include <Ghost.hpp>
 
+# include <HUD.hpp>
+
 class Gameplay : public Scene
 {
 public:
@@ -21,4 +23,6 @@ private:
   Food m_food;
   Player m_pacman;
   Ghost m_blueGhost, m_pinkGhost, m_redGhost, m_yellowGhost;
+
+  HUD m_hud;
 };
