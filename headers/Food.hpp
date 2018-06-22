@@ -18,7 +18,7 @@ public:
   int eatFood (const sf::Vector2f & position);
 
   bool eatenSpecialFood();
-
+  bool over() const;
 private:
   void updateTexture ();
 
@@ -33,4 +33,5 @@ private:
   sf::Vector2i m_tileCount;
   sf::Vector2i m_tileSize;
   bool m_eatenSpecialFood = false;
+  int m_totalFood;
 };

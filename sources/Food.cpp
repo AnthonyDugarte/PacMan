@@ -2,7 +2,8 @@
 
 Food::Food (const TileMap & mapita)
 : m_tileCount(mapita.getTileCount()),
-  m_tileSize(mapita.getTileSize())
+  m_tileSize(mapita.getTileSize()),
+  m_totalFood(0)
 {
   sf::Vector2f position(0, 0);
 
@@ -20,6 +21,7 @@ Food::Food (const TileMap & mapita)
     {
       if(mapita._walkable(x, y))
       {
+        ++m_totalFood;
         m_foodStatus[y][x] = true;
         foodSprite.setPosition(x * m_tileSize.x, y * m_tileSize.y);
         m_texture.draw(foodSprite);
@@ -118,10 +120,17 @@ bool Food::eatenSpecialFood()
   return false;
 }
 
+bool Food::over() const
+{
+  return m_totalFood == 0;
+}
+
+
 bool Food::_eat (const sf::Vector2i & position)
 {
   if(m_foodStatus[position.y][position.x])
   {
+    --m_totalFood;
     m_foodStatus[position.y][position.x] = false;
     return true;
   }
