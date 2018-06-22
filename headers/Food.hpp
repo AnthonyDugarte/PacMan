@@ -17,6 +17,8 @@ public:
    */
   int eatFood (const sf::Vector2f & position);
 
+  bool eatenSpecialFood();
+
 private:
   void updateTexture ();
 
@@ -24,9 +26,11 @@ private:
 
   // here we have our status
   std::vector<std::vector<bool>> m_foodStatus;
+  std::vector<sf::Vector2i> m_specialFood;
 
   sf::RenderTexture m_texture;
 
   sf::Vector2i m_tileCount;
   sf::Vector2i m_tileSize;
+  bool m_eatenSpecialFood = false;
 };
