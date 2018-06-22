@@ -41,6 +41,7 @@ void Gameplay::updateMembers()
   // pacman stuff
   m_pacman.update(getElapsed(), m_map);
   m_hud.update(m_food.eatFood(m_pacman.getPosition()));
+  int ghostPoints = 600;
 
   if(m_food.eatenSpecialFood())
   {
@@ -62,7 +63,10 @@ void Gameplay::updateMembers()
     Helpers::hasCollision(m_blueGhost, m_pacman, 254))
   {
     if(m_blueGhost.attackable())
+    {
       m_blueGhost.attacked();
+      m_hud.update(ghostPoints);
+    }
     else if(m_pacman.attackable())
       m_pacman.attacked();
   }
@@ -72,7 +76,10 @@ void Gameplay::updateMembers()
     Helpers::hasCollision(m_pinkGhost, m_pacman, 254))
   {
     if(m_pinkGhost.attackable())
+    {
       m_pinkGhost.attacked();
+      m_hud.update(ghostPoints);
+    }
     else if(m_pacman.attackable())
       m_pacman.attacked();
   }
@@ -82,7 +89,10 @@ void Gameplay::updateMembers()
     Helpers::hasCollision(m_redGhost, m_pacman, 254))
   {
     if(m_redGhost.attackable())
+    {
       m_redGhost.attacked();
+      m_hud.update(ghostPoints);
+    }
     else if(m_pacman.attackable())
       m_pacman.attacked();
   }
@@ -92,7 +102,10 @@ void Gameplay::updateMembers()
     Helpers::hasCollision(m_yellowGhost, m_pacman, 254))
   {
     if(m_yellowGhost.attackable())
+    {
       m_yellowGhost.attacked();
+      m_hud.update(ghostPoints);
+    }
     else if(m_pacman.attackable())
       m_pacman.attacked();
   }
