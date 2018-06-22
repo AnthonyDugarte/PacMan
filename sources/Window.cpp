@@ -4,7 +4,7 @@ Window::Window (const std::string & title, const sf::Vector2u & size)
 : m_windowTitle(title),
   m_windowSize(size)
 {
-  std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
+  std::fstream & ctrol { AssetManager::getFile("Captures/ctrol.file") };
 
   std::string str;
   std::getline(ctrol, str , '\n');
@@ -18,11 +18,9 @@ Window::~Window ()
 {
   if(screenShootTaken) // see? xD
   {
-    std::fstream ctrol { AssetManager::getFile("Captures/ctrol.file") };
+    std::fstream & ctrol { AssetManager::getFile("Captures/ctrol.file") };
     ctrol.seekg(0);
     ctrol << m_capsN;
-
-    ctrol.close();
   }
 
   close();
@@ -74,7 +72,8 @@ void Window::screenShot ()
   texture.create(windowSize.x, windowSize.y);
   texture.update(*this);
 
-  AssetManager::saveScreenShot(std::move(texture), m_capsN++);
+  std::string path("Captures/capture" + std::to_string(m_capsN++) + ".png");
+  AssetManager::saveTexture(std::move(texture), path);
 }
 
 const bool & Window::isDone () const

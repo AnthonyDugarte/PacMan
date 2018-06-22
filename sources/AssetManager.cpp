@@ -13,6 +13,12 @@ AssetManager::~AssetManager ()
     delete [] m_bitmasks.begin()->second;
     m_bitmasks.erase(m_bitmasks.begin());
   }
+
+  while(not m_files.empty())
+  {
+    m_files.begin()->second.close();
+    m_files.erase(m_files.begin());
+  }
 }
 
 sf::Texture & AssetManager::getTexture (const std::string & path)
@@ -54,15 +60,26 @@ sf::Font & AssetManager::getFont (const std::string & path)
   return instance.m_fonts[path];
 }
 
-std::fstream AssetManager::getFile (const std::string & path)
+std::fstream & AssetManager::getFile (const std::string & path)
 {
+  auto && instance { get_instance() };
+
+  auto && search{ instance.m_files.find(path) };
+  if(search != instance.m_files.end())
+  {
+    search->second.clear();
+    search->second.seekg(0, std::ios::beg);
+    return search->second;
+  }
+
   std::string prefix{ "assets/" };
   std::fstream file(prefix + path);
 
   if(not file.is_open())
     throw std::invalid_argument("file could not be opened: " + prefix + path);
 
-  return std::move(file);
+  instance.m_files[path] = std::move(file);
+  return instance.m_files[path];
 }
 
 namespace Helpers
@@ -125,24 +142,4 @@ namespace Helpers
 
     return std::pair<const sf::Texture *, sf::Uint8 *>(&*texture, std::move(&*new_mask));
   }
-}
-
-namespace Helpers
-{
-  void __saveScreenShot (sf::Texture texture, size_t capsN)
-  {
-    sf::Image screenshot { texture.copyToImage() };
-
-    std::string prefix{ "assets/Captures/capture" + std::to_string(capsN) };
-    screenshot.saveToFile(prefix + ".png");
-  }
-}
-
-void AssetManager::saveScreenShot (sf::Texture texture, size_t capsN)
-{
-  auto && instance { get_instance() };
-
-  // set it as a std::asyc  so the copy to image from a texture process don't slow down main loop updates
-  // it could have optimizations and better implementation.
-  instance.m_voidFutures.emplace_back(std::async(std::launch::async, Helpers::__saveScreenShot, std::move(texture), capsN));
 }

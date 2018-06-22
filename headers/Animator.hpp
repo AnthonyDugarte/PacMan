@@ -14,7 +14,7 @@ public:
   void createAnimation (const std::string & name, const sf::Time & duration, bool looping);
 
   // @Param 2: Should animation start from the begining?
-  bool switchAnimation (const std::string & name, bool reset = false);
+  bool switchAnimation (const std::string & name, bool resetAnimation = false);
 
   Animation * findAnimation (const std::string & name) const;
   const std::string & getCurrentAnimationName () const;
@@ -30,7 +30,7 @@ public:
   virtual void update (const sf::Time & dt);
 
 private:
-  void switchAnimation (Animation & newAnimation, const std::string & name, bool reset);
+  void switchAnimation (Animation & newAnimation, const std::string & name, bool resetAnimation);
 
   Animation * m_current;
   std::string m_currentName;

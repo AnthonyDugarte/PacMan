@@ -84,7 +84,7 @@ void Animation::addFrame (const std::string & path)
 
 void Animation::addFrames (const std::string & pre_path)
 {
-  std::fstream framesInfo { AssetManager::getFile(pre_path + "/frames.info") };
+  std::fstream & framesInfo { AssetManager::getFile(pre_path + "/frames.info") };
 
   std::string str;
 

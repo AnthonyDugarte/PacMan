@@ -2,7 +2,7 @@
 
 ## Current status
 
-![Pacman 7](assets/Captures/capture29.png)
+![Pacman 7](assets/Captures/capture39.png)
 
 ## TODO:
 * ~~Pacman animation~~
@@ -12,7 +12,8 @@
 * ~~HUD~~
 * Menu
 * "Game Over" and "You Won!" states
-* Special food (for blue ghosts uuuuuhhh and eye walking ones xDD)
+* ~~Special food~~
+* blue ghosts uuuuuhhh and eye walking ones xDD
 
 ## Download and play
 * This game was made with [SFML library](https://www.sfml-dev.org/), in order to play it, install this library
@@ -27,6 +28,8 @@ cd PacMan
 make
 ./pacman.out
 ```
+
+If you try to play it and find some bug, share it with me uwu
 
 ## Status Historial
 * Tilemap
@@ -54,3 +57,7 @@ make
 * Cute HUD added and now there is a SCORE MARK
 
 ![Pacman 6](assets/Captures/capture24.png) ![Pacman 6](assets/Captures/capture25.png) ![Pacman 6](assets/Captures/capture26.png)
+
+* now we have big dots aksdasjkdsa
+
+![Pacman 7](assets/Captures/capture38.png)

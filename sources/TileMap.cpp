@@ -138,8 +138,6 @@ namespace Helpers
           // lilTile.tilePos.y = y;
           mapPath.get(); // bye comma, bye '\n'
         }
-
-      mapPath.close();
     }
     catch(...) // if not, then is not that available, isn't it?
     {
@@ -181,7 +179,6 @@ namespace Helpers
     for(int y = 0; y < inf.tileNumber.y; ++y)
       for(int x = 0; x < inf.tileNumber.x; ++x)
         tile_map.m_tiles[y][x].setPos({ x, y });
-
     /* number of capes the world is going to have, what I say is: number of different
      * textures to render, their priotity goes from low->hight.
      */
@@ -195,7 +192,7 @@ namespace Helpers
       std::string prefix("map/" + tile_map.name() + "/tile" + std::to_string(i));
 
       // both files are needed: .info and .png.
-      std::fstream tileFile { AssetManager::getFile(prefix + ".info" ) };
+      std::fstream & tileFile { AssetManager::getFile(prefix + ".info" ) };
       auto && tileTexture { AssetManager::getTexture(prefix + ".png") };
 
       // auxiliar string
@@ -261,26 +258,22 @@ namespace Helpers
         currPos.x = 0;
         ++currPos.y;
       } // end of Y-axis. We continue to the next tile drawing
-      tileFile.close();
     } // end of tiles. We now shall draw our map and set it uuwwu
 
-    tile_map.m_texture.display(); // sounds tricky, isn't it? Just check sf::RenderTexture documentation (I haven't, not completly of course, gosh)
+   tile_map.m_texture.display(); // sounds tricky, isn't it? Just check sf::RenderTexture documentation (I haven't, not completly of course, gosh)
 
-    /* TODO: this last part should be reworked. Why are we saving our texture and then
-     * we are uploading it again, little magic to be done on AssetManager
-     */
-    sf::Image img { tile_map.m_texture.getTexture().copyToImage() };
-    // img.createMaskFromColor(sf::Color::Black);
-    img.saveToFile("assets/map/" + tile_map.name() + "/map.png"); // we save it as map because what the hell
+   std::string mapPath("map/" + tile_map.name() + "/map.png");
+   AssetManager::saveTexture(tile_map.m_texture.getTexture(), mapPath);
 
     /* saving the map.info (tile division, this is going to be use for walking uwwu, we are gonna save the size of the map so we can
      *  reload our vector with the isMapAvailable function.
      */
-     std::ofstream  mapInfo("assets/map/" + tile_map.name() + "/map.info");
+    std::ofstream  mapInfo("assets/map/" + tile_map.name() + "/map.info");
 
-     mapInfo << (tile_map.m_showPath ? "T" : "F") << "\n";
-     mapInfo << inf.tileSize.x << "," << inf.tileSize.y << "\n"; // for map.size, I'm lazy why should we divide texture size with tiles number
-     mapInfo << inf.tileNumber.x << "," << inf.tileNumber.y << "\n"; // number of tiles (for vector)
+    mapInfo << (tile_map.m_showPath ? "T" : "F") << "\n";
+
+    mapInfo << inf.tileSize.x << "," << inf.tileSize.y << "\n"; // for map.size, I'm lazy why should we divide texture size with tiles number
+    mapInfo << inf.tileNumber.x << "," << inf.tileNumber.y << "\n"; // number of tiles (for vector)
 
     for(auto && y : tile_map.m_tiles)
     {

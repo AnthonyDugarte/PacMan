@@ -40,6 +40,9 @@ bool Attributes::recentlyAttacked ()
 
 void Attributes::restoreAttackable ()
 {
+  if(dead())
+    return;
+  
   m_attackable = true;
 }
 
@@ -52,7 +55,7 @@ bool Attributes::attackable () const
 {
   if(dead())
     return false;
-  
+
   return m_attackable;
 }
 

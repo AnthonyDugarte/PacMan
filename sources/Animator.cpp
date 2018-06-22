@@ -17,9 +17,11 @@ Animator::Animator (const Animator & copy)
 
 Animator::~Animator ()
 {
-  // TODO: Optimize this, deleteting it and erasing it from the map
-  for(auto && it : m_animations)
-    delete it.second;
+  while(not m_animations.empty())
+  {
+    delete m_animations.begin()->second;
+    m_animations.erase(m_animations.begin());
+  }
 }
 
 void Animator::createAnimation (const std::string & name, const sf::Time & duration, bool looping)
@@ -31,13 +33,13 @@ void Animator::createAnimation (const std::string & name, const sf::Time & durat
     switchAnimation(*m_animations[name], name, true);
 }
 
-bool Animator::switchAnimation (const std::string & name, bool reset)
+bool Animator::switchAnimation (const std::string & name, bool resetAnimation)
 {
   auto && animation{ findAnimation(name) };
 
   if(animation)
   {
-    switchAnimation(*animation, name, reset);
+    switchAnimation(*animation, name, resetAnimation);
     return true;
   }
 
@@ -84,10 +86,10 @@ void Animator::update (const sf::Time & dt)
 }
 
 void Animator::switchAnimation (Animation & newAnimation,
-  const std::string & name, bool reset)
+  const std::string & name, bool resetAnimation)
 {
   m_current = &newAnimation;
-  if(reset and name != m_currentName)
+  if(resetAnimation and name != m_currentName)
     m_current->reset();
 
   m_currentName = name;
