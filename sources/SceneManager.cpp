@@ -15,6 +15,14 @@ void SceneManager::startGame ()
       m_type = Gameplay(m_window).run();
     break;
 
+    case Scene::Type::gameOver:
+      m_type = GameEnd(m_window, "Game Over").run();
+    break;
+
+    case Scene::Type::gameWon:
+      m_type = GameEnd(m_window, "You Won").run();
+    break;
+
     case Scene::Type::end:
     default:
     break;

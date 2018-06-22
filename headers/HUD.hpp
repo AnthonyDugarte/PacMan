@@ -15,6 +15,7 @@ public:
   void fitInWindow(sf::RenderWindow & window);
 
   void update(int score);
+  int getScore() const;
 
 private:
   virtual void draw(sf::RenderTarget &, sf::RenderStates) const;

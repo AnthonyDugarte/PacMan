@@ -5,6 +5,7 @@
 # include <TileMap.hpp>
 # include <Food.hpp>
 # include <Ghost.hpp>
+# include <Globals.hpp>
 
 # include <HUD.hpp>
 

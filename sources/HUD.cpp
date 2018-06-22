@@ -36,6 +36,11 @@ void HUD::update(int score)
   }
 }
 
+int HUD::getScore() const
+{
+  return m_score;
+}
+
 void HUD::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
   if(m_lives)

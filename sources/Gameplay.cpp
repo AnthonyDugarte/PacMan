@@ -24,6 +24,16 @@ Scene::Type Gameplay::run ()
     while(m_window.pollEvent(event))
       m_window.handleEvent(event); // window stuff
 
+    if(m_pacman.dead() or m_food.over())
+    {
+      Globals::Score() = m_hud.getScore();
+
+      if(m_food.over())
+        return Scene::Type::gameWon;
+      return Scene::Type::gameOver;
+    }
+
+
     updateMembers();
 
     m_window.beginRender(sf::Color::Black);

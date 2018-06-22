@@ -1,8 +1,7 @@
 # pragma once
 
 # include <Gameplay.hpp>
-
-# include <Scene.hpp>
+# include <GameEnd.hpp>
 
 class SceneManager
 {
