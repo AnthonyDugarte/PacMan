@@ -53,12 +53,12 @@ Ghost::Ghost (const std::string & colorPath, sf::Vector2f initPos, sf::Vector2f 
 
 namespace Helpers
 {
-  int ManhattanDistance(const sf::Vector2i & origin, const sf::Vector2i & destiny)
+  int ManhattanDistance (const sf::Vector2i & origin, const sf::Vector2i & destiny)
   {
     return std::abs(origin.x - destiny.x) + std::abs(origin.y - destiny.y);
   }
 
-  void decrease(int & n)
+  void decrease (int & n)
   {
     if(n > 0)
       --n;
@@ -67,7 +67,7 @@ namespace Helpers
   }
 
   template<int N>
-  void updatePathFinding(Ghost & ghost, TileMap& map, const Entity & pacman)
+  void updatePathFinding (Ghost & ghost, TileMap& map, const Entity & pacman)
   {
     std::cerr << "invalid updatePathFinding: " << N << std::endl;
   }
@@ -262,7 +262,7 @@ void Ghost::update (const sf::Time & dt, TileMap & map, const Entity & pacman)
   updateAnimation(dt);
 }
 
-void Ghost::movePos(const sf::Time & dt)
+void Ghost::movePos (const sf::Time & dt)
 {
   if(not m_targetPositions.empty())
   {
@@ -291,7 +291,7 @@ void Ghost::movePos(const sf::Time & dt)
   }
 }
 
-void Ghost::makeChoice()
+void Ghost::makeChoice ()
 {
   m_choice = Helpers::random(0, 4); // 0 and 1 are pacman following behaviors
   m_deadTime = sf::seconds(Helpers::random(2.f, 5.f)); // each behavior will last 2 ~ 5 seconds
@@ -341,7 +341,7 @@ void Ghost::updateAnimation (const sf::Time & dt)
 namespace Helpers
 {
   // A* implementation
-  void updatePath(Ghost & ghost, TileMap& map, const sf::Vector2f & targetPos)
+  void updatePath (Ghost & ghost, TileMap& map, const sf::Vector2f & targetPos)
   {
     // get the target node and the origin node;
     sf::Vector2i tileSize = map.getTileSize();

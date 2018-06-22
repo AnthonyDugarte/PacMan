@@ -6,7 +6,7 @@
 class GameEnd : public Scene
 {
 public:
-  GameEnd(Window & window, const std::string & message);
+  GameEnd (Window & window, const std::string & message);
 
   Type run () override;
 

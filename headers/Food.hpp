@@ -5,7 +5,6 @@
 class Food : public sf::Sprite
 {
 public:
-  // TODO: Add the big food type
   enum class Type { small = 100, big = 500 }; // points
 
   // take the path way of the map and set all along it the food
@@ -17,8 +16,8 @@ public:
    */
   int eatFood (const sf::Vector2f & position);
 
-  bool eatenSpecialFood();
-  bool over() const;
+  bool eatenSpecialFood ();
+  bool over () const;
 private:
   void updateTexture ();
 

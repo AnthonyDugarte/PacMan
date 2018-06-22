@@ -10,7 +10,7 @@ class Ghost;
 
 namespace Helpers
 {
-  void updatePath(Ghost & ghost, TileMap& map, const sf::Vector2f & targetPos);
+  void updatePath (Ghost & ghost, TileMap& map, const sf::Vector2f & targetPos);
 }
 
 class Ghost : public Entity
@@ -24,7 +24,7 @@ public:
 private:
   void updateAnimation (const sf::Vector2f & movement);
   void updateAnimation (const sf::Time & dt);
-  void movePos(const sf::Time & dt);
+  void movePos (const sf::Time & dt);
 
   std::vector<sf::Vector2f> m_targetPositions;
   sf::Vector2f m_currentTarget;
@@ -40,7 +40,7 @@ private:
   sf::Vector2f m_initPos;
   sf::Vector2f m_originPos;
 
-  void makeChoice();
+  void makeChoice ();
 
   friend void Helpers::updatePath(Ghost &, TileMap&, const sf::Vector2f &);
 };

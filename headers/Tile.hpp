@@ -25,11 +25,11 @@ public:
   Tile (Type type);
 
   const Type & getType () const;
-  void setType(Type newType);
+  void setType (Type newType);
 
-  const sf::Vector2i & getPos() const;
+  const sf::Vector2i & getPos () const;
   // local Position, in grid coordinates
-  void setPos(const sf::Vector2i & pos);
+  void setPos (const sf::Vector2i & pos);
 
   bool isPath () const;
 
@@ -49,7 +49,7 @@ private:
 
 struct TilesInfo
 {
-  TilesInfo()
+  TilesInfo ()
   {
     // empty
   }

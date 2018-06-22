@@ -17,8 +17,8 @@ public:
   Type run () override;
 
 private:
-  void updateMembers();
-  void drawMembers();
+  void updateMembers ();
+  void drawMembers ();
 
   TileMap m_map;
   Food m_food;

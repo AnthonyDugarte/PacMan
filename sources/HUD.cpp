@@ -1,6 +1,6 @@
 # include <HUD.hpp>
 
-HUD::HUD(const Attributes & attributes)
+HUD::HUD (const Attributes & attributes)
 : m_attributes(attributes),
   m_hearthTexture(AssetManager::getTexture("health/hearth.png")),
   m_text("0", AssetManager::getFont("KenneyPixel.ttf"), 30),
@@ -9,13 +9,13 @@ HUD::HUD(const Attributes & attributes)
   updateLives();
 }
 
-void HUD::fitInWindow(sf::RenderWindow & window)
+void HUD::fitInWindow (sf::RenderWindow & window)
 {
   m_text.setPosition(window.getSize().x, 0);
   m_text.move(-15, -15);
 }
 
-void HUD::update(int score)
+void HUD::update (int score)
 {
   // updating lives
   if(m_attributes.get_health() != m_lives)
@@ -36,19 +36,19 @@ void HUD::update(int score)
   }
 }
 
-int HUD::getScore() const
+int HUD::getScore () const
 {
   return m_score;
 }
 
-void HUD::draw(sf::RenderTarget & target, sf::RenderStates states) const
+void HUD::draw (sf::RenderTarget & target, sf::RenderStates states) const
 {
   if(m_lives)
     target.draw(m_livesSprite);
   target.draw(m_text, states);
 }
 
-void HUD::drawSprite(int count)
+void HUD::drawSprite (int count)
 {
   if(count <= 0)
   {
@@ -62,7 +62,7 @@ void HUD::drawSprite(int count)
   drawSprite(--count);
 }
 
-void HUD::updateLives()
+void HUD::updateLives ()
 {
   if(m_lives == 0)
     return;

@@ -1,6 +1,6 @@
 # include <GameEnd.hpp>
 
-GameEnd::GameEnd(Window & window, const std::string & message)
+GameEnd::GameEnd (Window & window, const std::string & message)
 : Scene(window, Scene::Type::gameOver),
   m_message(message)
 {

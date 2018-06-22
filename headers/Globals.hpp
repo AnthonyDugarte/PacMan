@@ -8,7 +8,7 @@ protected:
   Globals ();
 
 public:
-  static int & Score();
+  static int & Score ();
 
 private:
   int m_score;

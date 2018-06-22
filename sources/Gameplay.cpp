@@ -46,7 +46,7 @@ Scene::Type Gameplay::run ()
   return Scene::Type::end;
 }
 
-void Gameplay::updateMembers()
+void Gameplay::updateMembers ()
 {
   // pacman stuff
   m_pacman.update(getElapsed(), m_map);
@@ -121,7 +121,7 @@ void Gameplay::updateMembers()
   }
 }
 
-void Gameplay::drawMembers()
+void Gameplay::drawMembers ()
 {
   // we draw map first
   m_window.draw(m_map);

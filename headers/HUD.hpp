@@ -10,18 +10,18 @@ public:
   {
     empty = 0, almost_empty = 1, almost_full = 2, full = 3
   };
-  HUD(const Attributes &);
+  HUD (const Attributes &);
 
-  void fitInWindow(sf::RenderWindow & window);
+  void fitInWindow (sf::RenderWindow & window);
 
-  void update(int score);
-  int getScore() const;
+  void update (int score);
+  int getScore () const;
 
 private:
-  virtual void draw(sf::RenderTarget &, sf::RenderStates) const;
+  virtual void draw (sf::RenderTarget &, sf::RenderStates) const;
 
-  void drawSprite(int count);
-  void updateLives();
+  void drawSprite (int count);
+  void updateLives ();
 
   const Attributes & m_attributes;
   sf::Texture & m_hearthTexture;

@@ -26,7 +26,7 @@ public:
   sf::Vector2i getTileCount () const;
 
   //@Params: positions in grid coordinates
-  Tile* getTile(int x, int y);
+  Tile* getTile (int x, int y);
 
 
   bool isWalkable (float x, float y) const; // global coordinates
@@ -34,7 +34,7 @@ public:
   sf::Vector2f getTileCenter (const sf::Vector2f & pos) const; // global cords to center of tile in pos
 
   // reset A* information: H, G, F and parentNode
-  void resetNodes();
+  void resetNodes ();
 
 private:
   std::string m_name;
@@ -44,7 +44,7 @@ private:
   sf::RenderTexture m_texture;
   std::map<int, std::map<int, Tile>> m_tiles; // it is accesed [y][x];
 
-  bool validPos(float x, float y) const;
+  bool validPos (float x, float y) const;
 
   friend void Helpers::generateMap(TileMap & map, const TilesInfo & inf);
   friend bool Helpers::isMapAvailable(TileMap & map);

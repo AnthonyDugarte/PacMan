@@ -6,7 +6,7 @@ Globals::Globals ()
   // empty
 }
 
-int & Globals::Score()
+int & Globals::Score ()
 {
   auto && instance { get_instance() };
 

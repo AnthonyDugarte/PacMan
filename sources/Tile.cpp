@@ -11,17 +11,17 @@ const Tile::Type & Tile::getType () const
   return m_type;
 }
 
-void Tile::setType(Type type)
+void Tile::setType (Type type)
 {
   m_type = type;
 }
 
-const sf::Vector2i & Tile::getPos() const
+const sf::Vector2i & Tile::getPos () const
 {
   return m_tilePos;
 }
 
-void Tile::setPos(const sf::Vector2i & newPos)
+void Tile::setPos (const sf::Vector2i & newPos)
 {
   m_tilePos = newPos;
 }

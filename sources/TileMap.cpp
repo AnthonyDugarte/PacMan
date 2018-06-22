@@ -56,7 +56,7 @@ sf::Vector2i TileMap::getTileCount () const
   return { m_tiles.size() != 0 ? static_cast<int>(m_tiles.at(0).size()) : 0, static_cast<int>(m_tiles.size()) };
 }
 
-Tile* TileMap::getTile(int x, int y)
+Tile* TileMap::getTile (int x, int y)
 {
   if(not validPos(x, y))
     return nullptr;
@@ -82,7 +82,7 @@ sf::Vector2f TileMap::getTileCenter (const sf::Vector2f & pos) const
   return sf::Vector2f(static_cast<int>(pos.x / m_tileSize.x) * m_tileSize.x + (m_tileSize.x >> 1),static_cast<int>(pos.y / m_tileSize.y) * m_tileSize.y + (m_tileSize.y >> 1));
 }
 
-void TileMap::resetNodes()
+void TileMap::resetNodes ()
 {
   for(auto && y : m_tiles)
     for(auto && x : y.second)
@@ -92,7 +92,7 @@ void TileMap::resetNodes()
     }
 }
 
-bool TileMap::validPos(float x, float y) const
+bool TileMap::validPos (float x, float y) const
 {
   if(y >= m_tiles.size() or m_tiles.size() == 0 or x < 0 or y < 0)
     return false;

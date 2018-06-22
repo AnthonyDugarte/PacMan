@@ -110,7 +110,7 @@ int Food::eatFood (const sf::Vector2f & floatPos)
   return static_cast<int>(Type::small);
 }
 
-bool Food::eatenSpecialFood()
+bool Food::eatenSpecialFood ()
 {
   if(m_eatenSpecialFood)
   {
@@ -120,7 +120,7 @@ bool Food::eatenSpecialFood()
   return false;
 }
 
-bool Food::over() const
+bool Food::over () const
 {
   return m_totalFood == 0;
 }
