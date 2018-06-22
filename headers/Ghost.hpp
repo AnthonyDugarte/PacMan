@@ -24,14 +24,18 @@ public:
 private:
   void updateAnimation (const sf::Vector2f & movement);
   void updateAnimation (const sf::Time & dt);
+  void movePos(const sf::Time & dt);
 
   std::vector<sf::Vector2f> m_targetPositions;
   sf::Vector2f m_currentTarget;
 
   sf::Time m_deadTime;
+  sf::Time m_attackableTime;
+
   bool m_randomActive;
+  bool m_gettingAttackableTime = false;
   int m_choice;
-  
+
   Animator m_animator;
   sf::Vector2f m_initPos;
   sf::Vector2f m_originPos;

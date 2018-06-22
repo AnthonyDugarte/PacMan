@@ -2,7 +2,7 @@
 
 ## Current status
 
-![Pacman 7](assets/Captures/capture39.png)
+![Pacman 7](assets/Captures/capture47.png)
 
 ## TODO:
 * ~~Pacman animation~~
@@ -13,7 +13,7 @@
 * Menu
 * "Game Over" and "You Won!" states
 * ~~Special food~~
-* blue ghosts uuuuuhhh and eye walking ones xDD
+* ~~blue ghosts uuuuuhhh and eye walking ones xDD~~
 
 ## Download and play
 * This game was made with [SFML library](https://www.sfml-dev.org/), in order to play it, install this library
@@ -61,3 +61,8 @@ If you try to play it and find some bug, share it with me uwu
 * now we have big dots aksdasjkdsa
 
 ![Pacman 7](assets/Captures/capture38.png)
+
+* eatable blue ghosts when a big dot is eaten asjdkjaskdjask
+
+![Pacman 8](assets/Captures/capture44.png)
+![Pacman 8](assets/Captures/capture45.png)
