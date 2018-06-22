@@ -11,10 +11,6 @@ Gameplay::Gameplay (Window & window)
   m_yellowGhost("Yellow", sf::Vector2f(234, 184), sf::Vector2f(250, 232)),
   m_hud(m_pacman)
 {
-  // we eat the foot that is around pacman initialPos so he don't get points from them
-  for(size_t x = 223; x <= 224; ++x)
-    m_food.eatFood(sf::Vector2f(x, 376));
-
   m_hud.fitInWindow(m_window);
 }
 
@@ -45,6 +41,10 @@ void Gameplay::updateMembers()
   // pacman stuff
   m_pacman.update(getElapsed(), m_map);
   m_hud.update(m_food.eatFood(m_pacman.getPosition()));
+
+  if(m_food.eatenSpecialFood())
+    std::cout << "blue timeeeee\n";
+
 
   // ghosts stuff
   m_blueGhost.update(getElapsed(), m_map, m_pacman);

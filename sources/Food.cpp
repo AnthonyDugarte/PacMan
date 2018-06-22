@@ -15,21 +15,40 @@ Food::Food (const TileMap & mapita)
   m_texture.create(m_tileCount.x * m_tileSize.x, m_tileCount.y * m_tileSize.y);
   m_texture.setSmooth(true);
 
-  while(position.y < m_tileCount.y)
-  {
-    position.x = 0;
-    while(position.x < m_tileCount.x)
+  for(size_t y = 0; y < m_tileCount.y; ++y)
+    for(size_t x = 0; x < m_tileCount.x; ++x)
     {
-      if(mapita._walkable(position.x, position.y))
+      if(mapita._walkable(x, y))
       {
-        m_foodStatus[position.y][position.x] = true;
-        foodSprite.setPosition(position.x * m_tileSize.x, position.y * m_tileSize.y);
+        m_foodStatus[y][x] = true;
+        foodSprite.setPosition(x * m_tileSize.x, y * m_tileSize.y);
         m_texture.draw(foodSprite);
       }
-
-      ++position.x;
     }
-    ++position.y;
+
+  // setting up big food
+  foodTexture = AssetManager::getTexture("map/" + mapita.name() + "/bigFood.png");
+  std::fstream & foodInfo { AssetManager::getFile("map/" + mapita.name() + "/food.info") };
+  std::string str;
+
+  std::getline(foodInfo, str, '\n');
+  if(str != "# special food")
+    throw std::invalid_argument("posibble not a .info food file");
+
+  for(std::getline(foodInfo, str, '\n'); str[0] != '#'; std::getline(foodInfo, str, '\n'))
+  {
+    sf::Vector2i pos(std::stoi(str.substr(0, str.find(","))), std::stoi(str.substr(str.find(",") + 1)));
+    m_specialFood.push_back(pos);
+    foodSprite.setPosition(pos.x * m_tileSize.x, pos.y * m_tileSize.y);
+    m_texture.draw(foodSprite);
+  }
+  /***************/
+
+  // eating baad placed food
+  for(std::getline(foodInfo, str, '\n'); str != ""; std::getline(foodInfo, str, '\n'))
+  {
+    sf::Vector2f pos(std::stoi(str.substr(0, str.find(","))), std::stoi(str.substr(str.find(",") + 1)));
+    eatFood({ pos.x * m_tileSize.x, pos.y * m_tileSize.y });
   }
 
   m_texture.display();
@@ -41,7 +60,6 @@ Food::~Food ()
   /* I think that sprite's destructor writes on it's texture (which is unwrittable thanks to RenderTexture)
    * so we make it writte in something else xD
    */
-
   sf::Texture empty;
   setTexture(empty);
 }
@@ -79,7 +97,25 @@ int Food::eatFood (const sf::Vector2f & floatPos)
   m_texture.draw(empty);
   updateTexture();
 
+  for(auto && it = m_specialFood.begin(); it != m_specialFood.end(); ++it)
+    if(*it == position)
+    {
+      m_eatenSpecialFood = true;
+      m_specialFood.erase(it);
+      return static_cast<int> (Type::big);
+    }
+
   return static_cast<int>(Type::small);
+}
+
+bool Food::eatenSpecialFood()
+{
+  if(m_eatenSpecialFood)
+  {
+    m_eatenSpecialFood = false;
+    return true;
+  }
+  return false;
 }
 
 bool Food::_eat (const sf::Vector2i & position)
