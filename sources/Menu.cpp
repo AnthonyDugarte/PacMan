@@ -47,6 +47,7 @@ Scene::Type Menu::run ()
           switch (event.key.code)
           {
             case sf::Keyboard::S:
+            case sf::Keyboard::Down:
             if(m_currentButton == Button::play)
             {
               m_currentButton = Button::quit;
@@ -55,6 +56,7 @@ Scene::Type Menu::run ()
             break;
 
             case sf::Keyboard::W:
+            case sf::Keyboard::Up:
             if(m_currentButton == Button::quit)
             {
               m_currentButton = Button::play;

@@ -44,10 +44,10 @@ int WSAD::rPressed () const
 
 void WSAD::getInput ()
 {
-  W = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-  S = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-  A = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-  D = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+  W = sf::Keyboard::isKeyPressed(sf::Keyboard::W) or sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+  S = sf::Keyboard::isKeyPressed(sf::Keyboard::S) or sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+  A = sf::Keyboard::isKeyPressed(sf::Keyboard::A) or sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+  D = sf::Keyboard::isKeyPressed(sf::Keyboard::D) or sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 }
 
 void WSAD::handleInput ()
