@@ -38,7 +38,6 @@ Scene::Type Gameplay::run ()
       return Scene::Type::gameOver;
     }
 
-
     updateMembers();
 
     m_window.beginRender(sf::Color::Black);

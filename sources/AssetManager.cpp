@@ -37,7 +37,6 @@ sf::Texture & AssetManager::getTexture (const std::string & path)
     throw std::invalid_argument("texture could not be loaded: " + prefix + path);
 
   new_texture.setSmooth(true);
-
   instance.m_textures[path] = std::move(new_texture);
   return instance.m_textures[path];
 }

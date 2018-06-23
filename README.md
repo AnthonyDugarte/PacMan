@@ -1,8 +1,18 @@
 # Pacman
 
-## Current status
+![Pacman 0](assets/Captures/capture66.png)
 
-![Pacman 0](assets/Captures/capture47.png)
+![Pacman 0](assets/Captures/capture67.png)
+
+![Pacman 0](assets/Captures/capture73.png)
+
+![Pacman 0](assets/Captures/capture74.png)
+
+![Pacman 0](assets/Captures/capture75.png)
+
+![Pacman 0](assets/Captures/capture76.png)
+
+![Pacman 0](assets/Captures/capture77.png)
 
 ## TODO:
 * ~~Pacman animation~~
@@ -18,15 +28,15 @@
 
 #### Congrats to us all. We have accomplished our first individual project ever. This is a big step for us. It's time to go for another one. Maybe in another language uuuhhhh, that would be a new big step.
 
-So, now that we have a menu, ghosts, score system and big dots making their own duty, it's time to add some music, imrpove visual stuff and fix a few bugs that came out at the very last moment.
+So, now that we have a menu, ghosts, score system and big dots making their own duty; it's time to add some music, improve visual stuff ~~and fix a few bugs that came out at the very last moment~~.
 
 ## new TODO:
 * Music
 * Colorful GUI uwu
-* Try to play it in different machines xDDDDD
+* Try to play it on different machines xDDDDD
 
 ## Download and play
-* This game was made with [SFML library](https://www.sfml-dev.org/), in order to play it, install this library
+* This game was made with [SFML library](https://www.sfml-dev.org/); in order to play it, install this library
 ```
 sudo apt-get install libsfml-dev
 ```
@@ -102,3 +112,5 @@ If you try to play it and find some bug, share it with me uwu
 * Little menu added uwu, it seems baad, but it does what it's meant to.
 
 ![Pacman 19](assets/Captures/capture60.png)
+
+### MVP achieved

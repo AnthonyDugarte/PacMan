@@ -76,7 +76,7 @@ void Animator::addFrames(const std::string & name, const std::string & pre_path)
     return;
   }
 
-  animation->addFrames(pre_path + "/");
+  animation->addFrames(pre_path);
 }
 
 void Animator::update (const sf::Time & dt)

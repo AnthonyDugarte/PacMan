@@ -41,7 +41,6 @@ private:
   sf::Vector2i m_tileSize;
   bool m_showPath;
 
-  sf::RenderTexture m_texture;
   std::map<int, std::map<int, Tile>> m_tiles; // it is accesed [y][x];
 
   bool validPos (float x, float y) const;

@@ -82,8 +82,6 @@ Scene::Type Menu::run ()
       }
     }
 
-
-
     m_window.beginRender(sf::Color::Black);
     m_window.draw(m_selected);
     m_window.draw(m_playButton);

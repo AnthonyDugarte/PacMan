@@ -14,6 +14,7 @@ Food::Food (const TileMap & mapita)
   m_foodStatus.insert(m_foodStatus.begin(), m_tileCount.y, XaxisInitData);
 
   m_texture.create(m_tileCount.x * m_tileSize.x, m_tileCount.y * m_tileSize.y);
+  m_texture.clear(sf::Color(0, 0, 0, 0));
   m_texture.setSmooth(true);
 
   for(size_t y = 0; y < m_tileCount.y; ++y)

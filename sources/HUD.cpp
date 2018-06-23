@@ -70,6 +70,7 @@ void HUD::updateLives ()
   m_livesSprite.setTexture(m_hearthTexture, true);
   m_drawingLives.create(m_hearthTexture.getSize().x * m_lives,
     m_hearthTexture.getSize().y);
+  m_drawingLives.clear(sf::Color(0, 0, 0, 0));
   drawSprite(m_lives);
   m_livesSprite.setPosition(0,0);
 }

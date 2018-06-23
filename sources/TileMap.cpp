@@ -7,8 +7,8 @@ TileMap::TileMap (const std::string & mapName, bool showPath)
   if(not Helpers::isMapAvailable(*this))
     Helpers::generateMap(*this, Tile::getTilesInfo(mapName));
 
-  m_texture.display();
-  setTexture(m_texture.getTexture(), true);
+  std::string mapPath("map/" + name() + "/map.png");
+  setTexture(AssetManager::getTexture(mapPath), true);
 }
 
 const std::string & TileMap::name () const
@@ -146,16 +146,7 @@ namespace Helpers
 
     try // now to take the texture
     {
-      auto && mapTexture { AssetManager::getTexture("map/" + tile_map.name() + "/map.png") };
-
-      sf::Vector2i size(tile_map.getTileCount().x * tile_map.getTileSize().x,
-                                  tile_map.getTileCount().y * tile_map.getTileSize().y);
-
-      tile_map.m_texture.create(size.x, size.y);
-      tile_map.m_texture.setSmooth(true);
-
-      sf::Sprite aux(mapTexture);
-      tile_map.m_texture.draw(aux);
+      AssetManager::getTexture("map/" + tile_map.name() + "/map.png");
     }
     catch(...) // if wasn't taken, then it is not available... true logic
     {
@@ -168,12 +159,14 @@ namespace Helpers
 
   void generateMap (TileMap & tile_map, const TilesInfo & inf)
   {
+    sf::RenderTexture textureDrawing;
     // where we hare going to draw the map, for the sake of clarity
 
     // defining the size of the map according to number of tiles and their size
-    tile_map.m_texture.create(inf.tileNumber.x * inf.tileSize.x, inf.tileNumber.y * inf.tileSize.y);
+    textureDrawing.create(inf.tileNumber.x * inf.tileSize.x, inf.tileNumber.y * inf.tileSize.y);
     // cute and smoothy picture.
-    tile_map.m_texture.setSmooth(true);
+    textureDrawing.setSmooth(true);
+    // textureDrawing.clear(sf::Color(0, 0, 0, 0));
 
     for(int y = 0; y < inf.tileNumber.y; ++y)
       for(int x = 0; x < inf.tileNumber.x; ++x)
@@ -244,7 +237,7 @@ namespace Helpers
 
               // uhmm variable names should be reworked
               tileSprite.setPosition(currPos.x * inf.tileSize.x, currPos.y * inf.tileSize.y);
-              tile_map.m_texture.draw(tileSprite);
+              textureDrawing.draw(tileSprite);
             }
           }
 
@@ -260,10 +253,10 @@ namespace Helpers
       } // end of Y-axis. We continue to the next tile drawing
     } // end of tiles. We now shall draw our map and set it uuwwu
 
-   tile_map.m_texture.display(); // sounds tricky, isn't it? Just check sf::RenderTexture documentation (I haven't, not completly of course, gosh)
+   textureDrawing.display(); // sounds tricky, isn't it? Just check sf::RenderTexture documentation (I haven't, not completly of course, gosh)
 
    std::string mapPath("map/" + tile_map.name() + "/map.png");
-   AssetManager::saveTexture(tile_map.m_texture.getTexture(), mapPath);
+   AssetManager::saveTexture(textureDrawing.getTexture(), mapPath);
 
     /* saving the map.info (tile division, this is going to be use for walking uwwu, we are gonna save the size of the map so we can
      *  reload our vector with the isMapAvailable function.

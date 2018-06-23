@@ -33,6 +33,9 @@ public:
   static void saveTexture (T&& texture, const std::string & path);
 
 private:
+  template<typename T>
+  static void __saveTexture (T&& texture, const std::string & path);
+
   std::map<std::string, sf::Texture> m_textures;
   std::map<std::string, sf::Font> m_fonts;
   std::map<std::string, std::fstream> m_files;
@@ -50,14 +53,21 @@ private:
   friend class Singleton<AssetManager>;
 };
 
-namespace Helpers
+template<typename T>
+void AssetManager::__saveTexture (T&& texture, const std::string & path)
 {
-  template<typename T>
-  void __saveTexture (T&& texture, const std::string & path)
-  {
-    sf::Image img{ texture.copyToImage() };
-    img.saveToFile(path);
-  }
+  sf::Image img{ texture.copyToImage() };
+
+  std::string prefix("assets/");
+
+  auto && instance { get_instance() };
+  sf::Texture newTexture;
+  newTexture.loadFromImage(img);
+  newTexture.setSmooth(true);
+
+  instance.m_textures[path] = std::move(newTexture);
+
+  img.saveToFile(prefix + path);
 }
 
 template<typename T>
@@ -65,9 +75,7 @@ void AssetManager::saveTexture (T&& texture, const std::string & path)
 {
   auto && instance { get_instance() };
 
-  std::string prefix("assets/");
-
   // set it as a std::asyc  so the copy to image from a texture process don't slow down main loop updates
   instance.m_voidFutures.emplace_back(std::async(std::launch::async,
-    Helpers::__saveTexture<T>, std::forward<T>(texture), prefix + path));
+    AssetManager::__saveTexture<T>, std::forward<T>(texture), path));
 }

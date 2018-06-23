@@ -4,7 +4,7 @@ Window::Window (const std::string & title, const sf::Vector2u & size)
 : m_windowTitle(title),
   m_windowSize(size)
 {
-  std::fstream & ctrol { AssetManager::getFile("Captures/ctrol.file") };
+  std::fstream & ctrol { AssetManager::getFile("Captures/.ctrol.file") };
 
   std::string str;
   std::getline(ctrol, str , '\n');
@@ -18,7 +18,7 @@ Window::~Window ()
 {
   if(screenShootTaken) // see? xD
   {
-    std::fstream & ctrol { AssetManager::getFile("Captures/ctrol.file") };
+    std::fstream & ctrol { AssetManager::getFile("Captures/.ctrol.file") };
     ctrol.seekg(0);
     ctrol << m_capsN;
   }
