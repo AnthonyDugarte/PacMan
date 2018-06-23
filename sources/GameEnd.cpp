@@ -13,12 +13,12 @@ Scene::Type GameEnd::run ()
   sf::Text score("Score: " + std::to_string(Globals::Score()), AssetManager::getFont("KenneyPixel.ttf"), 30);
 
   auto && gameOverBounds = gameOver.getLocalBounds();
-  gameOver.setOrigin(gameOverBounds.width / 2, gameOverBounds.height / 2);
+  gameOver.setOrigin(gameOverBounds.left + gameOverBounds.width / 2, gameOverBounds.top + gameOverBounds.height / 2);
   gameOver.setPosition(m_window.getSize().x / 2, m_window.getSize().y / 2);
 
   auto && scoreBounds = score.getLocalBounds();
-  score.setOrigin(scoreBounds.width / 2, scoreBounds.height / 2);
-  score.setPosition(m_window.getSize().x / 2, gameOver.getPosition().y + gameOverBounds.height * 2);
+  score.setOrigin(scoreBounds.left + scoreBounds.width / 2, scoreBounds.top + scoreBounds.height / 2);
+  score.setPosition(m_window.getSize().x / 2, gameOver.getPosition().y + gameOverBounds.height);
 
   sf::Time deadTime = sf::seconds(4);
   restartClock();
@@ -39,6 +39,6 @@ Scene::Type GameEnd::run ()
 
       restartClock();
   }
-
-  return Scene::Type::end;
+  
+  return Scene::Type::menu;
 }

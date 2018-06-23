@@ -84,7 +84,7 @@ void Animation::addFrame (const std::string & path)
 
 void Animation::addFrames (const std::string & pre_path)
 {
-  std::fstream & framesInfo { AssetManager::getFile(pre_path + "/frames.info") };
+  std::fstream & framesInfo { AssetManager::getFile(pre_path + "/.frames.info") };
 
   std::string str;
 
@@ -97,7 +97,7 @@ void Animation::addFrames (const std::string & pre_path)
     reverse_animation = true;
   else if(str == "F")
     reverse_animation = false;
-  else throw std::invalid_argument("not a valid condition: " + str + " on file: " + pre_path + "/frames.info");
+  else throw std::invalid_argument("not a valid condition: " + str + " on file: " + pre_path + "/.frames.info");
 
   std::getline(framesInfo, str, '\n');
   std::string & sufix { str };

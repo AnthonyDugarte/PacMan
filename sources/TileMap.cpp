@@ -108,7 +108,7 @@ namespace Helpers
   {
     try // to see if map.info is build
     {
-      auto && mapPath { AssetManager::getFile("map/" + tile_map.name() + "/map.info") };
+      auto && mapPath { AssetManager::getFile("map/" + tile_map.name() + "/.map.info") };
       std::string str;
 
       std::getline(mapPath, str, '\n');
@@ -163,7 +163,6 @@ namespace Helpers
       return false;
     }
 
-    std::clog << "successful map load\n";
     return true; // it's available aksjdkasjdkas
   }
 
@@ -189,11 +188,12 @@ namespace Helpers
        *
        * Excepctions aren't handled. Care with it.
        */
-      std::string prefix("map/" + tile_map.name() + "/tile" + std::to_string(i));
+       std::string infoPrefix("map/" + tile_map.name() + "/.tile" + std::to_string(i));
+      std::string pngPrefix("map/" + tile_map.name() + "/tile" + std::to_string(i));
 
       // both files are needed: .info and .png.
-      std::fstream & tileFile { AssetManager::getFile(prefix + ".info" ) };
-      auto && tileTexture { AssetManager::getTexture(prefix + ".png") };
+      std::fstream & tileFile { AssetManager::getFile(infoPrefix + ".info" ) };
+      auto && tileTexture { AssetManager::getTexture(pngPrefix + ".png") };
 
       // auxiliar string
       std::string str;
@@ -268,7 +268,7 @@ namespace Helpers
     /* saving the map.info (tile division, this is going to be use for walking uwwu, we are gonna save the size of the map so we can
      *  reload our vector with the isMapAvailable function.
      */
-    std::ofstream  mapInfo("assets/map/" + tile_map.name() + "/map.info");
+    std::ofstream  mapInfo("assets/map/" + tile_map.name() + "/.map.info");
 
     mapInfo << (tile_map.m_showPath ? "T" : "F") << "\n";
 
@@ -285,7 +285,5 @@ namespace Helpers
     }
 
     tile_map.m_tileSize = inf.tileSize;
-
-    std::clog << "successful map Creation\n"; // cute log report of success
   }
 }  // namespace Helpers

@@ -22,7 +22,12 @@ Scene::Type Gameplay::run ()
   {
     sf::Event event;
     while(m_window.pollEvent(event))
+    {
       m_window.handleEvent(event); // window stuff
+
+      if(event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
+        return Scene::Type::menu;
+    }
 
     if(m_pacman.dead() or m_food.over())
     {

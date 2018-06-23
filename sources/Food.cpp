@@ -29,8 +29,9 @@ Food::Food (const TileMap & mapita)
     }
 
   // setting up big food
-  foodTexture = AssetManager::getTexture("map/" + mapita.name() + "/bigFood.png");
-  std::fstream & foodInfo { AssetManager::getFile("map/" + mapita.name() + "/food.info") };
+  auto && bigFood = AssetManager::getTexture("map/" + mapita.name() + "/bigFood.png");
+  foodSprite.setTexture(bigFood, true);
+  std::fstream & foodInfo { AssetManager::getFile("map/" + mapita.name() + "/.food.info") };
   std::string str;
 
   std::getline(foodInfo, str, '\n');

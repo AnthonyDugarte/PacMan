@@ -49,11 +49,6 @@ private:
 
 struct TilesInfo
 {
-  TilesInfo ()
-  {
-    // empty
-  }
-
   sf::Vector2i tileSize;
   sf::Vector2i tileNumber;
   int iterations; // number of tilex.info files

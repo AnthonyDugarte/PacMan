@@ -33,7 +33,7 @@ bool Tile::isPath () const
 
 TilesInfo Tile::getTilesInfo (const std::string & fileName)
 {
-  std::fstream & source { AssetManager::getFile("map/" + fileName + "/tiles.info") };
+  std::fstream & source { AssetManager::getFile("map/" + fileName + "/.tiles.info") };
   std::string str;
 
   TilesInfo information;

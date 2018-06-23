@@ -2,6 +2,7 @@
 
 # include <Gameplay.hpp>
 # include <GameEnd.hpp>
+# include <Menu.hpp>
 
 class SceneManager
 {
