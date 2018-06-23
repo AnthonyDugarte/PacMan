@@ -2,7 +2,7 @@
 
 ## Current status
 
-![Pacman 7](assets/Captures/capture47.png)
+![Pacman 0](assets/Captures/capture47.png)
 
 ## TODO:
 * ~~Pacman animation~~
@@ -10,10 +10,20 @@
 * ~~Ghosts animation~~
 * ~~A* (aksdjaksd this is the purpose for all this)~~
 * ~~HUD~~
-* Menu
+* ~~Menu~~
 * ~~"Game Over" and "You Won!" states~~
 * ~~Special food~~
 * ~~blue ghosts uuuuuhhh and eye walking ones xDD~~
+------------------------
+
+#### Congrats to us all. We have accomplished our first individual project ever. This is a big step for us. It's time to go for another one. Maybe in another language uuuhhhh, that would be a new big step.
+
+So, now that we have a menu, ghosts, score system and big dots making their own duty, it's time to add some music, imrpove visual stuff and fix a few bugs that came out at the very last moment.
+
+## new TODO:
+* Music
+* Colorful GUI uwu
+* Try to play it in different machines xDDDDD
 
 ## Download and play
 * This game was made with [SFML library](https://www.sfml-dev.org/), in order to play it, install this library
@@ -21,6 +31,7 @@
 sudo apt-get install libsfml-dev
 ```
 
+* A C++14 compiler is also needed.
 * Game:
 ```
 git clone https://github.com/prfcto2/PacMan.git
@@ -31,7 +42,7 @@ make
 
 If you try to play it and find some bug, share it with me uwu
 
-## Status Historial
+## History
 * Tilemap
 * Pickable food
 
@@ -52,38 +63,42 @@ If you try to play it and find some bug, share it with me uwu
 
 * lots of ghosts added aksdjaskdas, they have different behaviors which last for a random amount of time, when this time has ended or the target that they had been chasing it's reached, their behavior change.
 
-![Pacman 5](assets/Captures/capture10.png)
+![Pacman 6](assets/Captures/capture10.png)
 
-![Pacman 5](assets/Captures/capture13.png)
+![Pacman 7](assets/Captures/capture13.png)
 
-![Pacman 5](assets/Captures/capture14.png)
+![Pacman 8](assets/Captures/capture14.png)
 
 * Ghosts kill Pacman when they touch him aksdjaskd
 
-![Pacman 5](assets/Captures/capture15.png)
+![Pacman 9](assets/Captures/capture15.png)
 
-![Pacman 5](assets/Captures/capture16.png)
+![Pacman 10](assets/Captures/capture16.png)
 
 * Cute HUD added and now there is a SCORE MARK
 
-![Pacman 6](assets/Captures/capture24.png)
+![Pacman 11](assets/Captures/capture24.png)
 
-![Pacman 6](assets/Captures/capture25.png)
+![Pacman 12](assets/Captures/capture25.png)
 
-![Pacman 6](assets/Captures/capture26.png)
+![Pacman 13](assets/Captures/capture26.png)
 
 * now we have big dots aksdasjkdsa
 
-![Pacman 7](assets/Captures/capture38.png)
+![Pacman 14](assets/Captures/capture38.png)
 
 * eatable blue ghosts when a big dot is eaten asjdkjaskdjask
 
-![Pacman 8](assets/Captures/capture44.png)
+![Pacman 15](assets/Captures/capture44.png)
 
-![Pacman 8](assets/Captures/capture45.png)
+![Pacman 16](assets/Captures/capture45.png)
 
 * Game Over and Game Won states added askdjaskdjks
 
-![Pacman 8](assets/Captures/capture55.png)
+![Pacman 17](assets/Captures/capture55.png)
 
-![Pacman 8](assets/Captures/capture58.png)
+![Pacman 18](assets/Captures/capture58.png)
+
+* Little menu added uwu, it seems baad, but it does what it's meant to.
+
+![Pacman 19](assets/Captures/capture60.png)
