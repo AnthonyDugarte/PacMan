@@ -26,8 +26,7 @@ public:
   sf::Vector2i getTileCount () const;
 
   //@Params: positions in grid coordinates
-  Tile* getTile (int x, int y);
-
+  Tile * getTile (int x, int y);
 
   bool isWalkable (float x, float y) const; // global coordinates
   bool _walkable (float x, float y) const; // grid coordinates

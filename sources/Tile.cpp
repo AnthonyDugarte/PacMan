@@ -1,9 +1,20 @@
 # include <Tile.hpp>
 
+Tile::Tile ()
+: m_type(Type::empty)
+{
+  // empty
+}
+
 Tile::Tile (Type type)
 : m_type(type)
 {
   // empty
+}
+
+Tile::~Tile ()
+{
+  parentNode = nullptr;
 }
 
 const Tile::Type & Tile::getType () const

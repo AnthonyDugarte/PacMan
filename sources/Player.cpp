@@ -37,7 +37,7 @@ void Player::update (const sf::Time & dt, TileMap & map)
   // for(size_t i { 4 }; --i; healted()); // restore lifes
 
   if(attackable())
-    Entity::update(dt, &map);
+    Entity::update(dt, map);
 
   updateAnimation(dt);
 }

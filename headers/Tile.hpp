@@ -16,13 +16,9 @@ public:
     empty = 9
   };
 
-  Tile ()
-  : m_type(Type::empty)
-  {
-    // empty
-  }
-
+  Tile ();
   Tile (Type type);
+  ~Tile ();
 
   const Type & getType () const;
   void setType (Type newType);

@@ -16,6 +16,7 @@ public:
    */
   int eatFood (const sf::Vector2f & position);
 
+  bool justEaten();
   bool eatenSpecialFood ();
   bool over () const;
 private:
@@ -31,6 +32,8 @@ private:
 
   sf::Vector2i m_tileCount;
   sf::Vector2i m_tileSize;
+
+  bool m_eaten = false;
   bool m_eatenSpecialFood = false;
   int m_totalFood;
 };

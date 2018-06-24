@@ -108,9 +108,21 @@ int Food::eatFood (const sf::Vector2f & floatPos)
       m_specialFood.erase(it);
       return static_cast<int> (Type::big);
     }
+  m_eaten = true;
 
   return static_cast<int>(Type::small);
 }
+
+bool Food::justEaten()
+{
+  if(m_eaten)
+  {
+    m_eaten = false;
+    return true;
+  }
+  return false;
+}
+
 
 bool Food::eatenSpecialFood ()
 {

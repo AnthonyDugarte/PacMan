@@ -5,17 +5,16 @@ bool Entity::moving () const
   return m_pad.rPressed() != 0;
 }
 
-void Entity::update (const sf::Time & dt, TileMap * map)
+void Entity::update (const sf::Time & dt, TileMap & map)
 {
   m_pad.update();
-  if(map)
-    map->updateWSAD(m_pad, getPosition());
+  map.updateWSAD(m_pad, getPosition());
 
   if(m_pad.W)
   {
     moveUp(dt);
 
-    if(map and Helpers::hasCollision(*this, *map))
+    if(Helpers::hasCollision(*this, map))
     {
       m_pad.W = false;
       moveUp(-dt);
@@ -25,7 +24,7 @@ void Entity::update (const sf::Time & dt, TileMap * map)
   {
     moveDown(dt);
 
-    if(map and Helpers::hasCollision(*this, *map))
+    if(Helpers::hasCollision(*this, map))
     {
       m_pad.S = false;
       moveDown(-dt);
@@ -36,7 +35,7 @@ void Entity::update (const sf::Time & dt, TileMap * map)
   {
     moveLeft(dt);
 
-    if(map and Helpers::hasCollision(*this, *map))
+    if(Helpers::hasCollision(*this, map))
     {
       m_pad.A = false;
       moveLeft(-dt);
@@ -46,7 +45,7 @@ void Entity::update (const sf::Time & dt, TileMap * map)
   {
     moveRight(dt);
 
-    if(map and Helpers::hasCollision(*this, *map))
+    if(Helpers::hasCollision(*this, map))
     {
       m_pad.D = false;
       moveRight(-dt);

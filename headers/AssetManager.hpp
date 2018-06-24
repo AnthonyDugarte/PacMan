@@ -24,6 +24,7 @@ public:
   // All files are taken from a path inside assets folder
   static sf::Texture & getTexture (const std::string & path);
   static sf::Font & getFont (const std::string & path);
+  static sf::Music & getMusic(const std::string & path, bool looping = false);
   static std::fstream & getFile (const std::string & path);
 
   static sf::Uint8 * getBitMask (const std::string & path);
@@ -37,6 +38,7 @@ private:
   static void __saveTexture (T&& texture, const std::string & path);
 
   std::map<std::string, sf::Texture> m_textures;
+  std::map<std::string, sf::Music> m_musics;
   std::map<std::string, sf::Font> m_fonts;
   std::map<std::string, std::fstream> m_files;
 

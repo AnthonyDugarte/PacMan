@@ -56,7 +56,7 @@ sf::Vector2i TileMap::getTileCount () const
   return { m_tiles.size() != 0 ? static_cast<int>(m_tiles.at(0).size()) : 0, static_cast<int>(m_tiles.size()) };
 }
 
-Tile* TileMap::getTile (int x, int y)
+Tile * TileMap::getTile (int x, int y)
 {
   if(not validPos(x, y))
     return nullptr;

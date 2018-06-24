@@ -33,6 +33,8 @@ Menu::Menu (Window & window)
 
 Scene::Type Menu::run ()
 {
+  auto && music { AssetManager::getMusic("pacman_beginning.wav", true) };
+  music.play();
   restartClock();
   while(not m_window.isDone())
   {
@@ -65,6 +67,7 @@ Scene::Type Menu::run ()
             break;
 
             case sf::Keyboard::Return:
+            music.stop();
             switch (m_currentButton)
             {
               case Button::play:

@@ -30,15 +30,17 @@ sf::Texture & AssetManager::getTexture (const std::string & path)
   if (search != instance.m_textures.end())
     return search->second;
 
-  sf::Texture new_texture;
+  auto && new_texture { instance.m_textures[path] };
 
   std::string prefix{ "assets/" };
   if (not new_texture.loadFromFile(prefix + path))
+  {
+    instance.m_textures.erase(path);
     throw std::invalid_argument("texture could not be loaded: " + prefix + path);
+  }
 
   new_texture.setSmooth(true);
-  instance.m_textures[path] = std::move(new_texture);
-  return instance.m_textures[path];
+  return new_texture;
 }
 
 sf::Font & AssetManager::getFont (const std::string & path)
@@ -49,14 +51,38 @@ sf::Font & AssetManager::getFont (const std::string & path)
   if(search != instance.m_fonts.end())
     return search->second;
 
-  sf::Font new_font;
+  auto && new_font { instance.m_fonts[path] };
 
   std::string prefix("assets/font/");
   if(not new_font.loadFromFile(prefix + path))
+  {
+    instance.m_fonts.erase(path);
     throw std::invalid_argument("texture could not be loaded: " + prefix + path);
+  }
 
-  instance.m_fonts[path] = std::move(new_font);
-  return instance.m_fonts[path];
+  return new_font;
+}
+
+sf::Music & AssetManager::getMusic(const std::string & path, bool looping)
+{
+  auto && instance { get_instance() };
+
+  auto && search{ instance.m_musics.find(path) };
+  if(search != instance.m_musics.end())
+    return search->second;
+
+  auto && new_music { instance.m_musics[path] };
+
+  std::string prefix{ "assets/music/"};
+
+  if(not new_music.openFromFile(prefix + path))
+  {
+    instance.m_musics.erase(path);
+    throw std::invalid_argument("music could not be loaded: " + prefix + path);
+  }
+
+  new_music.setLoop(looping);
+  return new_music;
 }
 
 std::fstream & AssetManager::getFile (const std::string & path)
@@ -72,13 +98,16 @@ std::fstream & AssetManager::getFile (const std::string & path)
   }
 
   std::string prefix{ "assets/" };
-  std::fstream file(prefix + path);
+  auto && file { instance.m_files[path] };
+  file.open(prefix + path);
 
   if(not file.is_open())
+  {
+    instance.m_files.erase(path);
     throw std::invalid_argument("file could not be opened: " + prefix + path);
+  }
 
-  instance.m_files[path] = std::move(file);
-  return instance.m_files[path];
+  return file;
 }
 
 namespace Helpers

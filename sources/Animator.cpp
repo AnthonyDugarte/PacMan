@@ -17,6 +17,8 @@ Animator::Animator (const Animator & copy)
 
 Animator::~Animator ()
 {
+  m_current = nullptr;
+
   while(not m_animations.empty())
   {
     delete m_animations.begin()->second;

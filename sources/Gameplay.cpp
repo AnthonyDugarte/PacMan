@@ -9,10 +9,18 @@ Gameplay::Gameplay (Window & window)
   m_pinkGhost("Pink", sf::Vector2f(216, 184), sf::Vector2f(216, 232)),
   m_redGhost("Red", sf::Vector2f(232, 184), sf::Vector2f(232, 232)),
   m_yellowGhost("Yellow", sf::Vector2f(232, 184), sf::Vector2f(250, 232)),
-  m_hud(m_pacman)
+  m_hud(m_pacman),
+  m_deadMusic(&AssetManager::getMusic("pacman_death.wav", false)),
+  m_eatingMusic(&AssetManager::getMusic("pacman_chomp.wav", true))
 {
   m_hud.fitInWindow(m_window);
 }
+
+Gameplay::~Gameplay ()
+{
+  m_eatingMusic = nullptr;
+}
+
 
 Scene::Type Gameplay::run ()
 {
@@ -26,19 +34,43 @@ Scene::Type Gameplay::run ()
       m_window.handleEvent(event); // window stuff
 
       if(event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
+      {
+        m_deadMusic->stop();
         return Scene::Type::menu;
+      }
     }
 
-    if(m_pacman.dead() or m_food.over())
+    if(m_food.over())
     {
       Globals::Score() = m_hud.getScore();
+      return Scene::Type::gameWon;
+    }
 
-      if(m_food.over())
-        return Scene::Type::gameWon;
-      return Scene::Type::gameOver;
+    if(not m_pacman.attackable() and not m_deadPacman)
+    {
+      // if then is dead
+      m_deadPacman = true;
+      m_deadMusic->play();
+    }
+
+    if(m_deadTime < sf::Time::Zero)
+    {
+      if(m_pacman.dead())
+      {
+        Globals::Score() = m_hud.getScore();
+        return Scene::Type::gameOver;
+      }
+      else if(m_deadPacman)
+      {
+        m_deadTime = sf::seconds(2.5f);
+        m_deadPacman = false;
+      }
     }
 
     updateMembers();
+
+    if(m_eatingTime <= sf::Time::Zero)
+      m_eatingMusic->stop();
 
     m_window.beginRender(sf::Color::Black);
     drawMembers();
@@ -55,6 +87,15 @@ void Gameplay::updateMembers ()
   // pacman stuff
   m_pacman.update(getElapsed(), m_map);
   m_hud.update(m_food.eatFood(m_pacman.getPosition()));
+  if(m_food.justEaten())
+  {
+    // m_eatingMusic->play();
+    m_eatingTime = sf::seconds(.7f);
+  }
+
+  if(m_deadPacman)
+    m_deadTime -= getElapsed();
+
   int ghostPoints = 600;
 
   if(m_food.eatenSpecialFood())
