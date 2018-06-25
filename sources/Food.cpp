@@ -54,6 +54,7 @@ Food::Food (const TileMap & mapita)
     sf::Vector2f pos(std::stoi(str.substr(0, str.find(","))), std::stoi(str.substr(str.find(",") + 1)));
     eatFood({ pos.x * m_tileSize.x, pos.y * m_tileSize.y });
   }
+  justEaten(); // to set eaten state to default
 
   m_texture.display();
   setTexture(m_texture.getTexture(), true);
@@ -101,6 +102,7 @@ int Food::eatFood (const sf::Vector2f & floatPos)
   m_texture.draw(empty);
   updateTexture();
 
+  m_eaten = true;
   for(auto && it = m_specialFood.begin(); it != m_specialFood.end(); ++it)
     if(*it == position)
     {
@@ -108,7 +110,6 @@ int Food::eatFood (const sf::Vector2f & floatPos)
       m_specialFood.erase(it);
       return static_cast<int> (Type::big);
     }
-  m_eaten = true;
 
   return static_cast<int>(Type::small);
 }

@@ -11,19 +11,24 @@ Gameplay::Gameplay (Window & window)
   m_yellowGhost("Yellow", sf::Vector2f(232, 184), sf::Vector2f(250, 232)),
   m_hud(m_pacman),
   m_deadMusic(&AssetManager::getMusic("pacman_death.wav", false)),
-  m_eatingMusic(&AssetManager::getMusic("pacman_chomp.wav", true))
+  m_worldMusic(&AssetManager::getMusic("ghosts_ambient.wav", true)),
+  m_eatingMusic(&AssetManager::getMusic("wakka_wakka.wav", false)),
+  m_deadGhostMusic(&AssetManager::getMusic("ghost_eaten.wav", false))
 {
+  m_worldMusic->setVolume(50.f);
   m_hud.fitInWindow(m_window);
 }
 
 Gameplay::~Gameplay ()
 {
-  m_eatingMusic = nullptr;
+  m_deadMusic = m_worldMusic = m_eatingMusic = nullptr;
 }
-
 
 Scene::Type Gameplay::run ()
 {
+  m_worldMusic->play();
+
+  restartClock();
   restartClock();
 
   while(not m_window.isDone())
@@ -36,12 +41,16 @@ Scene::Type Gameplay::run ()
       if(event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
       {
         m_deadMusic->stop();
+        m_worldMusic->stop();
+        m_eatingMusic->stop();
         return Scene::Type::menu;
       }
     }
 
     if(m_food.over())
     {
+      m_worldMusic->stop();
+      m_eatingMusic->stop();
       Globals::Score() = m_hud.getScore();
       return Scene::Type::gameWon;
     }
@@ -57,6 +66,7 @@ Scene::Type Gameplay::run ()
     {
       if(m_pacman.dead())
       {
+        m_worldMusic->stop();
         Globals::Score() = m_hud.getScore();
         return Scene::Type::gameOver;
       }
@@ -68,9 +78,6 @@ Scene::Type Gameplay::run ()
     }
 
     updateMembers();
-
-    if(m_eatingTime <= sf::Time::Zero)
-      m_eatingMusic->stop();
 
     m_window.beginRender(sf::Color::Black);
     drawMembers();
@@ -87,16 +94,13 @@ void Gameplay::updateMembers ()
   // pacman stuff
   m_pacman.update(getElapsed(), m_map);
   m_hud.update(m_food.eatFood(m_pacman.getPosition()));
-  if(m_food.justEaten())
-  {
-    // m_eatingMusic->play();
-    m_eatingTime = sf::seconds(.7f);
-  }
+  if(m_food.justEaten())// and m_eatingMusic->getStatus() == sf::SoundSource::Stopped)
+    m_eatingMusic->play();
 
   if(m_deadPacman)
     m_deadTime -= getElapsed();
 
-  int ghostPoints = 600;
+  static int ghostPoints { 600 };
 
   if(m_food.eatenSpecialFood())
   {
@@ -113,57 +117,28 @@ void Gameplay::updateMembers ()
   m_yellowGhost.update(getElapsed(), m_map, m_pacman);
 
   // trying to kill pacman or blue ghost
-  if(not (m_pacman.dead() or m_blueGhost.dead()) and
-    (m_pacman.attackable() or m_blueGhost.attackable()) and
-    Helpers::hasCollision(m_blueGhost, m_pacman, 254))
+  static auto tryKill = [&](Ghost & ghost)->bool
   {
-    if(m_blueGhost.attackable())
+    if(not (m_pacman.dead() or ghost.dead())
+        and (m_pacman.attackable() or ghost.attackable())
+        and Helpers::hasCollision(ghost, m_pacman, 254))
     {
-      m_blueGhost.attacked();
-      m_hud.update(ghostPoints);
+      if(ghost.attackable())
+      {
+        m_deadGhostMusic->play();
+        ghost.attacked();
+        m_hud.update(ghostPoints);
+      }
+      else if(m_pacman.attackable())
+        m_pacman.attacked();
+      return true;
     }
-    else if(m_pacman.attackable())
-      m_pacman.attacked();
-  }
-  // trying to kill pacman or pink ghost
-  else if(not (m_pacman.dead() or m_pinkGhost.dead()) and
-    (m_pacman.attackable() or m_pinkGhost.attackable()) and
-    Helpers::hasCollision(m_pinkGhost, m_pacman, 254))
-  {
-    if(m_pinkGhost.attackable())
-    {
-      m_pinkGhost.attacked();
-      m_hud.update(ghostPoints);
-    }
-    else if(m_pacman.attackable())
-      m_pacman.attacked();
-  }
-  // trying to kill pacman or red ghost
-  else if(not (m_pacman.dead() or m_redGhost.dead()) and
-    (m_pacman.attackable() or m_redGhost.attackable()) and
-    Helpers::hasCollision(m_redGhost, m_pacman, 254))
-  {
-    if(m_redGhost.attackable())
-    {
-      m_redGhost.attacked();
-      m_hud.update(ghostPoints);
-    }
-    else if(m_pacman.attackable())
-      m_pacman.attacked();
-  }
-  // trying to kill pacman or yellow ghost
-  else if(not (m_pacman.dead() or m_yellowGhost.dead()) and
-    (m_pacman.attackable() or m_yellowGhost.attackable()) and
-    Helpers::hasCollision(m_yellowGhost, m_pacman, 254))
-  {
-    if(m_yellowGhost.attackable())
-    {
-      m_yellowGhost.attacked();
-      m_hud.update(ghostPoints);
-    }
-    else if(m_pacman.attackable())
-      m_pacman.attacked();
-  }
+    return false;
+  };
+  tryKill(m_blueGhost);
+  tryKill(m_pinkGhost);
+  tryKill(m_redGhost);
+  tryKill(m_yellowGhost);
 }
 
 void Gameplay::drawMembers ()

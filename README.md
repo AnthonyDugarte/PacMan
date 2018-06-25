@@ -4,36 +4,11 @@
 
 ![Pacman 0](assets/Captures/capture67.png)
 
-![Pacman 0](assets/Captures/capture73.png)
-
-![Pacman 0](assets/Captures/capture74.png)
-
 ![Pacman 0](assets/Captures/capture75.png)
 
 ![Pacman 0](assets/Captures/capture76.png)
 
 ![Pacman 0](assets/Captures/capture77.png)
-
-## TODO:
-* ~~Pacman animation~~
-* ~~Ghosts with random movement~~
-* ~~Ghosts animation~~
-* ~~A* (aksdjaksd this is the purpose for all this)~~
-* ~~HUD~~
-* ~~Menu~~
-* ~~"Game Over" and "You Won!" states~~
-* ~~Special food~~
-* ~~blue ghosts uuuuuhhh and eye walking ones xDD~~
-------------------------
-
-#### Congrats to us all. We have accomplished our first individual project ever. This is a big step for us. It's time to go for another one. Maybe in another language uuuhhhh, that would be a new big step.
-
-So, now that we have a menu, ghosts, score system and big dots making their own duty; it's time to add some music, improve visual stuff ~~and fix a few bugs that came out at the very last moment~~.
-
-## new TODO:
-* Music
-* Colorful GUI uwu
-* Try to play it on different machines xDDDDD
 
 ## Download and play
 * This game was made with [SFML library](https://www.sfml-dev.org/); in order to play it, install this library
@@ -50,7 +25,26 @@ make
 ./pacman.out
 ```
 
-If you try to play it and find some bug, share it with me uwu
+If you play it I would be glad if you share your experience with me uwu also, I  hope you had found a little joy with it.
+
+## TODO:
+* ~~Pacman animation~~
+* ~~Ghosts with random movement~~
+* ~~Ghosts animation~~
+* ~~A* (aksdjaksd this is the purpose for all this)~~
+* ~~HUD~~
+* ~~Menu~~
+* ~~"Game Over" and "You Won!" states~~
+* ~~Special food~~
+* ~~blue ghosts uuuuuhhh and eye walking ones xDD~~
+------------------------
+
+#### Congrats to us all. We have accomplished our first individual project ever. This is a big step for us. It's time to go for another one. Maybe in another language uuuhhhh, that would be a new big step.
+
+## new TODO:
+* ~~Music~~
+* Colorful GUI uwu
+* Try to play it on different machines
 
 ## History
 * Tilemap
@@ -114,3 +108,5 @@ If you try to play it and find some bug, share it with me uwu
 ![Pacman 19](assets/Captures/capture60.png)
 
 ### MVP achieved
+
+* Music have been added aksjdkas It is a little annoying xD
